@@ -73,11 +73,6 @@ CREATE TABLE `bare_metal` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of bare_metal
--- ----------------------------
-INSERT INTO `bare_metal` VALUES ('dbde4e6d-c489-47fc-800e-e1a57d734895', 'd2d64a00-e106-462f-9222-cc0284df3ccb', '', null, '2', 'Intel(R) Xeon(R) CPU E5-2609 v4 @ 1.70GHz', '1700 MHz', '8', '8', '16', '<OUT OF SPEC>', null, '2400', '192.168.1.250', '6c:92:bf:b4:85:0d', null, null, '', 'Inspur', 'Inspur NF5280M4', '5f6b68ff92113201000923de', '400005018', 'ready', 'unknown', 'root', '0', null, null, '22', 'rackhd', 'rackhd', '', '1600906554502', '1600906554502');
-
--- ----------------------------
 -- Table structure for `bare_metal_rule`
 -- ----------------------------
 DROP TABLE IF EXISTS `bare_metal_rule`;
