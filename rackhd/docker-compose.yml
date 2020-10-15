@@ -1,0 +1,129 @@
+# Copyright 2016, EMC, Inc.
+
+version: '2'
+
+services:
+
+  mongo: # 27017
+    image: mongo:latest
+    network_mode: "host"
+    privileged: true
+
+  rabbitmq: # 5672, 15672
+    image: rabbitmq:management
+    network_mode: "host"
+    privileged: true
+
+  dhcp: # 67/udp
+    image: rackhd/isc-dhcp-server:latest
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "/opt/rackshift/rackhd/dhcp:/var/lib/dhcp"
+      - "./rackhd/dhcp/config:/etc/dhcp"
+      - "./rackhd/dhcp/defaults:/etc/defaults"
+
+  files:
+    image: rackhd/files:devel
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "./rackhd/files/mount:/RackHD/files"
+
+  # RackHD services
+
+  dhcp-proxy: # 68/udp, 4011
+    depends_on:
+      - dhcp
+      - mongo
+      - rabbitmq
+    image: rackhd/on-dhcp-proxy:${TAG}
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "/opt/rackshift/rackhd/dhcp :/var/lib/dhcp"
+      - "./rackhd/monorail:/opt/monorail"
+
+  http: # 9090, 9080
+    depends_on:
+      - files
+      - mongo
+      - rabbitmq
+    image: rackhd/on-http:${TAG}
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "/opt/rackshift/rackhd/files/mount/common:/RackHD/on-http/static/http/common"
+      - "./rackhd/monorail:/opt/monorail"
+
+  syslog: # 514/udp
+    depends_on:
+      - mongo
+      - rabbitmq
+    image: rackhd/on-syslog:latest
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "./rackhd/monorail:/opt/monorail"
+
+  taskgraph:
+    depends_on:
+      - dhcp
+      - mongo
+      - rabbitmq
+      - syslog
+    image: zdh/on-taskgraph:20200801
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "./rackhd/monorail:/opt/monorail"
+
+  tftp: # 69/udp
+    depends_on:
+      - files
+      - mongo
+      - rabbitmq
+      - syslog
+    image: rackhd/on-tftp:${TAG}
+    network_mode: "host"
+    privileged: true
+    volumes:
+      - "./rackhd/files/mount:/RackHD/on-tftp/static/tftp"
+      - "./rackhd/monorail:/opt/monorail "
+
+  rackshift: # 8082
+    image: local.harbor.com/rackshift/rackshift:62
+    privileged: true
+    pid: "host"
+    ports:
+      - "80:8082"
+      - "5005:5005"
+    volumes:
+      - "/opt/rackshift:/opt/rackshift"
+      - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
+      - "/proc:/host/proc"
+
+  mysql:
+    image: mysql:5.7.31
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - "/opt/rackshift/conf/mysql/mysql.cnf:/etc/mysql/mysql.cnf"
+      - "/opt/rackshift/data/mysql:/var/lib/mysql"
+      - "/opt/rackshift/conf/mysql/rackshift.sql:/docker-entrypoint-initdb.d/rackshift.sql"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+  
+  rackshift-proxy: # 8083
+    image: local.harbor.com/rackshift/rackshift-proxy:31
+    privileged: true
+    ports:
+      - "8083:8083"
+      - "5004:5004"
+    volumes:
+      - "/opt/rackshift:/opt/rackshift"
+      - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
+      - /var/run/docker.sock:/var/run/docker.sock
+

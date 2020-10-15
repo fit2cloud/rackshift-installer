@@ -1,0 +1,39 @@
+#!/bin/bash
+#chkconfig:2345 61 61
+case "$1" in
+
+start)
+
+echo "Starging rackshift Service..."
+cd /opt/rackshift
+docker-compose -f /opt/rackshift/docker-compose.yml up -d
+;;
+
+stop)
+
+echo "Stopping rackshift Service..."
+cd /opt/rackshift
+docker-compose -f /opt/rackshift/docker-compose.yml stop
+;;
+
+restart)
+cd /opt/rackshift
+docker-compose -f /opt/rackshift/docker-compose.yml restart
+;;
+
+status)
+cd /opt/rackshift
+docker-compose -f /opt/rackshift/docker-compose.yml ps
+;;
+
+reconfig)
+echo "请重新输入rackshift服务器ip地址："
+read serverIp
+cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
+sed -i  "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
+cd /opt/rackshift
+docker-compose -f /opt/rackshift/docker-compose.yml restart
+;;
+
+
+esac 
