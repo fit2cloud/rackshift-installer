@@ -1,11 +1,6 @@
-FIT2CLOUD2.0 RackShift安装帮助文档
-1.解压包 进入installer安装目录
-2.打开dhcpd.conf 设置 PXE网络的信息，包括：PXE网络网段，子网掩码，起始ip，结尾ip等
-3.打开server.conf 替换server_ip为当前RackShift机器的ip地址
-4.执行脚本 install.sh
-
-升级
-1.直接在install的基础上执行update.sh脚本（installer目录）
+安装：
+cd installer
+./install.sh
 
 安装完成之后 RackShift会以名字为 “rackshift”服务的形式存在会有如下命令
 service rackshift start  启动服务
