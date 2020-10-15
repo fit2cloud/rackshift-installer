@@ -24,11 +24,11 @@ services:
       - "./rackhd/dhcp/defaults:/etc/defaults"
 
   files:
-    image: rackhd/files:devel
+    image: rackshift/rackshift-files:1.0
     network_mode: "host"
     privileged: true
     volumes:
-      - "./rackhd/files/mount:/RackHD/files"
+      - "./rackhd/files/mount:/files"
 
   # RackHD services
 
@@ -119,7 +119,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin
   
   rackshift-proxy: # 8083
-    image: rackshift/rackshift-proxy:3 
+    image: rackshift/rackshift-proxy:4 
     privileged: true
     ports:
       - "8083:8083"
