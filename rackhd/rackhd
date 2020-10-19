@@ -2,7 +2,7 @@ case "$1" in
 
 start)
 
-echo "Starging fit2cloud-rackhd Service..."
+echo "starting fit2cloud-rackhd Service..."
 docker-compose -f /opt/fit2cloud/rakchd/docker-compose.yml up -d
 ;;
 

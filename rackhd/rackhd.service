@@ -2,7 +2,7 @@ case "$1" in
 
 start)
 
-echo "Starging sphinx Server..."
+echo "starting sphinx Server..."
 ;;
 
 stop)
