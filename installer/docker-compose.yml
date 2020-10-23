@@ -92,12 +92,11 @@ services:
       - "./rackhd/monorail:/opt/monorail "
 
   rackshift: # 8082
-    image: rackshift/rackshift:13 
+    image: rackshift/rackshift:23
     privileged: true
     pid: "host"
     ports:
       - "80:8082"
-      - "5005:5005"
     depends_on:
       - mysql
     volumes:
@@ -123,7 +122,6 @@ services:
     privileged: true
     ports:
       - "8083:8083"
-      - "5004:5004"
     volumes:
       - "/opt/rackshift:/opt/rackshift"
       - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
