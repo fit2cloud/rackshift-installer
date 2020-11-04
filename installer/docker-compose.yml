@@ -92,7 +92,7 @@ services:
       - "./rackhd/monorail:/opt/monorail "
 
   rackshift: # 8082
-    image: rackshift/rackshift:23
+    image: rackshift/rackshift:28
     privileged: true
     pid: "host"
     ports:
