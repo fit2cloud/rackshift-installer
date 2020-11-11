@@ -89,10 +89,10 @@ services:
     privileged: true
     volumes:
       - "./rackhd/files/mount:/RackHD/on-tftp/static/tftp"
-      - "./rackhd/monorail:/opt/monorail "
+      - "./rackhd/monorail:/opt/monorail"
 
   rackshift: # 8082
-    image: rackshift/rackshift:28
+    image: rackshift/rackshift:29
     privileged: true
     pid: "host"
     ports:
