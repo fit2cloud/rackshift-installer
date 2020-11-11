@@ -2,12 +2,12 @@
 cd installer
 ./install.sh
 
-安装完成之后 RackShift会以名字为 “rackshift”服务的形式存在会有如下命令
+安装完成之后 RackShift会以名字为 "rackshift" 服务的形式存在会有如下命令
 service rackshift start  启动服务
 service rackshift restart 重启服务
 service rackshift stop   停用服务
 service rackshift status 查看服务状态
-service rackshift reconfig 重设RackShift服务器IP
+service rackshift reconfig 重设 RackShift 服务器IP
 如有不明白或者部署安装出现错误请联系技术支持
 张工QQ：
 631871336
