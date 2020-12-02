@@ -94,11 +94,11 @@ services:
   # RackHD services
 
   rackshift: # 8082
-    image: rackshift/rackshift:48
+    image: rackshift/rackshift:62
     privileged: true
     pid: "host"
     ports:
-      - "80:8082"
+      - 80:8082
     depends_on:
       - mysql
     volumes:
@@ -115,7 +115,7 @@ services:
       - "/opt/rackshift/data/mysql:/var/lib/mysql"
       - "/opt/rackshift/conf/mysql/sql:/docker-entrypoint-initdb.d"
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: admin
 
@@ -123,7 +123,7 @@ services:
     image: rackshift/rackshift-proxy:4
     privileged: true
     ports:
-      - "8083:8083"
+      - 8083:8083
     volumes:
       - "/opt/rackshift:/opt/rackshift"
       - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"

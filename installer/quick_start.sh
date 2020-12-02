@@ -1,13 +1,11 @@
 #Install Latest Stable RackShift Release
-
-os=`uname -a`
-
+os=$(uname -a)
 # 支持MacOS
-if [[ $os =~ 'Darwin' ]];then
-    echo 暂时不支持 MacOS 安装
-    #VERSION=$(curl -s https://github.com/rackshift/rackshift/releases/latest |grep -Eo 'v[0-9]+.[0-9]+.[0-9]+')
+if [[ $os =~ 'Darwin' ]]; then
+  echo 暂时不支持 MacOS 安装
+  #VERSION=$(curl -s https://github.com/rackshift/rackshift/releases/latest |grep -Eo 'v[0-9]+.[0-9]+.[0-9]+')
 else
-	VERSION=$(curl -s https://github.com/rackshift/rackshift/releases/latest/download 2>&1 | grep -Po '[0-9]+\.[0-9]+\.[0-9]+.*(?=")')
+  VERSION=$(curl -s https://github.com/rackshift/rackshift/releases/latest/download 2>&1 | grep -Po '[0-9]+\.[0-9]+\.[0-9]+.*(?=")')
 fi
 
 wget --no-check-certificate https://github.com/rackshift/rackshift/releases/latest/download/rackshiftV${VERSION}.tar.gz
