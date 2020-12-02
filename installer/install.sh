@@ -258,17 +258,17 @@ printTitle "正在开放必要端口"
 
 notRunning=$(firewall-cmd --state 2>&1)
 if [[ "${notRunning}" == "running" ]]; then
-  firewall-cmd --zone=public --add-port=80/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=8080/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=8083/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=8443/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=9080/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=9090/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=9030/tcp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=4011/udp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=67/udp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=69/udp --permanent >>$installLog 2>/dev/null
-  firewall-cmd --reload
+  firewall-cmd --zone=public --add-port=80/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=8080/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=8083/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=8443/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=9080/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=9090/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=9030/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=4011/udp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=67/udp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=69/udp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --reload 1>/dev/null 2>/dev/null
   firewall-cmd --zone=public --list-ports
 else
   echo "防火墙已关闭，无需配置端口开放"
