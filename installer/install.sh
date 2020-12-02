@@ -251,8 +251,14 @@ colorMsg $green "[OK]"
 
 printTitle "启动  RackShift 服务"
 rsctl reload
-echo -ne "启动  RackShift 服务 \t........................ "
-colorMsg $green "[OK]"
+if [ $? -eq 0 ]; then
+  echo -ne "启动  RackShift 服务 \t........................ "
+  colorMsg $green "[OK]"
+else
+  echo -ne "启动  RackShift 服务 \t........................ "
+  colorMsg $red "[失败]"
+  exit 1
+fi
 
 printTitle "正在开放必要端口"
 

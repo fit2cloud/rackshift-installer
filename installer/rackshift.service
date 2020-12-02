@@ -89,7 +89,7 @@ function main() {
     ;;
 
   version)
-    cat cat /opt/rackshift/rackhd/conf/version
+    cat /opt/rackshift/rackhd/conf/version
     ;;
 
   usage)
