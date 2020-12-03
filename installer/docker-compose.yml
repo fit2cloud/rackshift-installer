@@ -101,6 +101,7 @@ services:
       - 80:8082
     depends_on:
       - mysql
+      - rackshift-plugins
     volumes:
       - "/opt/rackshift:/opt/rackshift"
       - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
@@ -128,4 +129,9 @@ services:
       - "/opt/rackshift:/opt/rackshift"
       - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
       - /var/run/docker.sock:/var/run/docker.sock
+
+  rackshift-plugins:
+    image: rackshift/rackshift-plugins:1
+    volumes:
+      - "/opt/rackshift/plugins:/plugins"
 
