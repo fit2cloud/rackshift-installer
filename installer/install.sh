@@ -7,6 +7,7 @@ green=32
 yellow=33
 blue=34
 validationPassed=1
+upgade=$1
 
 function printTitle() {
   echo -e "\n\n**********\t ${1} \t**********\n"
@@ -212,7 +213,9 @@ cp ./rackshift.properties /opt/rackshift/conf
 cp ./docker-compose.yml /opt/rackshift
 cp ./.env /opt/rackshift
 mkdir -p /opt/rackshift/plugins
-cp -rf ../plugins/* /opt/rackshift/plugins
+if [ -d ../plugins ]; then
+  cp -rf ../plugins/* /opt/rackshift/plugins
+fi
 
 colorMsg $green '[OK]'
 
@@ -238,12 +241,14 @@ fi
 ln -s /usr/local/bin/rsctl /usr/bin/rsctl
 
 ##配置 rackshift IP
-printTitle "配置 RackShift 服务 ip 地址:"
-echo "请输入 RackShift 当前IP地址(与物理机 PXE 口属于同一个 VLAN )："
-read serverIp
-cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
-sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
-sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
+if [ ! $upgade ]; then
+  printTitle "配置 RackShift 服务 ip 地址:"
+  echo "请输入 RackShift 当前IP地址(与物理机 PXE 口属于同一个 VLAN )："
+  read serverIp
+  cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
+fi
 
 chkconfig rackshift on >>/dev/null
 echo -ne "启动 Docker 服务 \t........................ "
