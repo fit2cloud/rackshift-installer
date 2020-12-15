@@ -7,7 +7,7 @@ green=32
 yellow=33
 blue=34
 validationPassed=1
-upgade=$1
+upgrade=$1
 
 function printTitle() {
   echo -e "\n\n**********\t ${1} \t**********\n"
@@ -177,14 +177,16 @@ if [ $? != 0 ]; then
 fi
 
 hasLsof=$(which lsof 2>&1)
-if [[ ! $hasLsof =~ "no lsof" ]]; then
-  rackshiftPorts=$(grep -A 1 "ports:$" ./docker-compose.yml | grep "\-.*:" | awk -F":" '{print $1}' | awk -F" " '{print $2}')
-  for rackshiftPort in ${rackshiftPorts}; do
-    checkPort $rackshiftPort
-  done
-else
-  echo -ne "lsof 检测端口 \t\t........................ "
-  colorMsg $red "[不存在]"
+if [ ! $upgrade ]; then
+  if [[ ! $hasLsof =~ "no lsof" ]]; then
+    rackshiftPorts=$(grep -A 1 "ports:$" ./docker-compose.yml | grep "\-.*:" | awk -F":" '{print $1}' | awk -F" " '{print $2}')
+    for rackshiftPort in ${rackshiftPorts}; do
+      checkPort $rackshiftPort
+    done
+  else
+    echo -ne "lsof 检测端口 \t\t........................ "
+    colorMsg $red "[不存在]"
+  fi
 fi
 
 if [ $validationPassed -eq 0 ]; then
@@ -223,7 +225,7 @@ colorMsg $green '[OK]'
 printSubTitle "加载 Docker 镜像"
 docker_images_folder="../docker-images"
 if [ ! -d "$docker_images_folder" ]; then
-  echo -ne "  目录检测 \t\t........................ "
+  echo -ne "目录检测 \t\t........................ "
   colorMsg $red "[不存在]"
 else
   for docker_image in ${docker_images_folder}/*; do
@@ -241,7 +243,7 @@ fi
 ln -s /usr/local/bin/rsctl /usr/bin/rsctl
 
 ##配置 rackshift IP
-if [ ! $upgade ]; then
+if [ ! $upgrade ]; then
   printTitle "配置 RackShift 服务 ip 地址:"
   echo "请输入 RackShift 当前IP地址(与物理机 PXE 口属于同一个 VLAN )："
   read serverIp
