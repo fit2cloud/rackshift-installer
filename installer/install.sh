@@ -202,19 +202,21 @@ if [ $(grep "vm.max_map_count" /etc/sysctl.conf | wc -l) -eq 0 ]; then
 fi
 
 ##配置 rackshift
-printTitle "配置  RackShift服务"
-echo -ne "配置  RackShift服务 \t........................ "
-mkdir -p /opt/rackshift/
-cp -rpf ../rackhd /opt/rackshift
-cp rackshift.service /etc/init.d/rackshift
-chmod a+x /etc/init.d/rackshift
-mkdir -p /opt/rackshift/conf/mysql/sql
-cp ./mysql.cnf /opt/rackshift/conf/mysql
-cp ./rackshift.sql /opt/rackshift/conf/mysql/sql
-cp ./rackshift.properties /opt/rackshift/conf
-cp ./docker-compose.yml /opt/rackshift
-cp ./.env /opt/rackshift
-mkdir -p /opt/rackshift/plugins
+if [ ! $upgrade ]; then
+  printTitle "配置  RackShift服务"
+  echo -ne "配置  RackShift服务 \t........................ "
+  mkdir -p /opt/rackshift/
+  cp -rpf ../rackhd /opt/rackshift
+  cp rackshift.service /etc/init.d/rackshift
+  chmod a+x /etc/init.d/rackshift
+  mkdir -p /opt/rackshift/conf/mysql/sql
+  cp ./mysql.cnf /opt/rackshift/conf/mysql
+  cp ./rackshift.sql /opt/rackshift/conf/mysql/sql
+  cp ./rackshift.properties /opt/rackshift/conf
+  cp ./docker-compose.yml /opt/rackshift
+  cp ./.env /opt/rackshift
+  mkdir -p /opt/rackshift/plugins
+fi
 if [ -d ../plugins ]; then
   cp -rf ../plugins/* /opt/rackshift/plugins
 fi
