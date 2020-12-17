@@ -213,10 +213,10 @@ if [ ! $upgrade ]; then
   cp ./mysql.cnf /opt/rackshift/conf/mysql
   cp ./rackshift.sql /opt/rackshift/conf/mysql/sql
   cp ./rackshift.properties /opt/rackshift/conf
-  cp ./docker-compose.yml /opt/rackshift
   cp ./.env /opt/rackshift
   mkdir -p /opt/rackshift/plugins
 fi
+cp ./docker-compose.yml /opt/rackshift
 if [ -d ../plugins ]; then
   cp -rf ../plugins/* /opt/rackshift/plugins
 fi
