@@ -6,29 +6,29 @@ services:
 
   mongo: # 27017
     image: mongo:latest
-    network_mode: "host"
+    network_mode: host
     privileged: true
 
   rabbitmq: # 5672, 15672
     image: rabbitmq:management
-    network_mode: "host"
+    network_mode: host
     privileged: true
 
   dhcp: # 67/udp
     image: rackhd/isc-dhcp-server:latest
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "/opt/rackshift/rackhd/dhcp:/var/lib/dhcp"
-      - "./rackhd/dhcp/config:/etc/dhcp"
-      - "./rackhd/dhcp/defaults:/etc/defaults"
+      - /opt/rackshift/rackhd/dhcp:/var/lib/dhcp
+      - ./rackhd/dhcp/config:/etc/dhcp
+      - ./rackhd/dhcp/defaults:/etc/defaults
 
   files:
     image: rackshift/rackshift-files:1.0
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "./rackhd/files/mount:/files"
+      - ./rackhd/files/mount:/files
 
   # RackHD services
 
@@ -38,11 +38,11 @@ services:
       - mongo
       - rabbitmq
     image: rackhd/on-dhcp-proxy:${TAG}
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "/opt/rackshift/rackhd/dhcp :/var/lib/dhcp"
-      - "./rackhd/monorail:/opt/monorail"
+      - /opt/rackshift/rackhd/dhcp :/var/lib/dhcp
+      - ./rackhd/monorail:/opt/monorail
 
   http: # 9090, 9080
     depends_on:
@@ -50,21 +50,21 @@ services:
       - mongo
       - rabbitmq
     image: rackhd/on-http:${TAG}
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "/opt/rackshift/rackhd/files/mount/common:/RackHD/on-http/static/http/common"
-      - "./rackhd/monorail:/opt/monorail"
+      - /opt/rackshift/rackhd/files/mount/common:/RackHD/on-http/static/http/common
+      - ./rackhd/monorail:/opt/monorail
 
   syslog: # 514/udp
     depends_on:
       - mongo
       - rabbitmq
     image: rackhd/on-syslog:latest
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "./rackhd/monorail:/opt/monorail"
+      - ./rackhd/monorail:/opt/monorail
 
   taskgraph:
     depends_on:
@@ -73,10 +73,10 @@ services:
       - rabbitmq
       - syslog
     image: rackshift/rackshift-taskgraph:20200801
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "./rackhd/monorail:/opt/monorail"
+      - ./rackhd/monorail:/opt/monorail
 
   tftp: # 69/udp
     depends_on:
@@ -85,36 +85,36 @@ services:
       - rabbitmq
       - syslog
     image: rackhd/on-tftp:${TAG}
-    network_mode: "host"
+    network_mode: host
     privileged: true
     volumes:
-      - "./rackhd/files/mount:/RackHD/on-tftp/static/tftp"
-      - "./rackhd/monorail:/opt/monorail"
+      - ./rackhd/files/mount:/RackHD/on-tftp/static/tftp
+      - ./rackhd/monorail:/opt/monorail
 
   # RackHD services
 
   rackshift: # 8082
     image: rackshift/rackshift:83
     privileged: true
-    pid: "host"
+    pid: host
     ports:
       - 80:8082
     depends_on:
       - mysql
       - rackshift-plugins
     volumes:
-      - "/opt/rackshift:/opt/rackshift"
-      - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
-      - "/proc:/host/proc"
+      - /opt/rackshift:/opt/rackshift
+      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - /var/run/docker.sock:/var/run/docker.sock
 
   mysql:
     image: mysql:5.7.31
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
-      - "/opt/rackshift/conf/mysql:/etc/mysql"
-      - "/opt/rackshift/data/mysql:/var/lib/mysql"
-      - "/opt/rackshift/conf/mysql/sql:/docker-entrypoint-initdb.d"
+      - /opt/rackshift/conf/mysql:/etc/mysql
+      - /opt/rackshift/data/mysql:/var/lib/mysql
+      - /opt/rackshift/conf/mysql/sql:/docker-entrypoint-initdb.d
     ports:
       - 3306:3306
     environment:
@@ -126,12 +126,12 @@ services:
     ports:
       - 8083:8083
     volumes:
-      - "/opt/rackshift:/opt/rackshift"
-      - "/opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common"
+      - /opt/rackshift:/opt/rackshift
+      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
     image: rackshift/rackshift-plugins:1
     volumes:
-      - "/opt/rackshift/plugins:/plugins"
+      - /opt/rackshift/plugins:/plugins
 

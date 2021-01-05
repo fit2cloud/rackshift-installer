@@ -260,6 +260,7 @@ systemctl restart docker
 colorMsg $green "[OK]"
 
 printTitle "启动  RackShift 服务"
+rsctl stop
 rsctl reload
 if [ $? -eq 0 ]; then
   echo -ne "启动  RackShift 服务 \t........................ "
