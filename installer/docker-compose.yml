@@ -94,7 +94,7 @@ services:
   # RackHD services
 
   rackshift: # 8082
-    image: rackshift/rackshift:83
+    image: rackshift/rackshift:v1.2.3
     privileged: true
     pid: host
     ports:
