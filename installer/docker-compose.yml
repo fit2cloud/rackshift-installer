@@ -139,5 +139,5 @@ services:
     image: kfox1111/ipmitool:latest
 
   racadm:
-    image: stackdot/racadm:latest
+    image: kciepluc/racadm-docker:latest
 
