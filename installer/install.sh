@@ -207,7 +207,7 @@ if [ ! $upgrade ]; then
   echo -ne "配置  RackShift服务 \t........................ "
   mkdir -p /opt/rackshift/
   cp -rpf ../rackhd /opt/rackshift
-  cp rackshift.service /etc/init.d/rackshift
+  cp rsctl /etc/init.d/rackshift
   chmod a+x /etc/init.d/rackshift
   mkdir -p /opt/rackshift/conf/mysql/sql
   cp ./mysql.cnf /opt/rackshift/conf/mysql

@@ -41,7 +41,7 @@ function main() {
 
   start)
 
-    echo "starting RackShift Service..."
+    echo "Starting RackShift Service..."
     compose start
     ;;
 
