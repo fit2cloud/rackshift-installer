@@ -7,7 +7,7 @@ else
   VERSION=$(curl -s https://github.com/rackshift/rackshift/releases/latest/download 2>&1 | grep -Po '[0-9]+\.[0-9]+\.[0-9]+.*(?=")')
 fi
 
-if [[ $VERSION =~ "" ]]; then
+if [ -z "$VERSION" ]; then
   echo Please check your network,github is unreachable!
   exit
 fi
