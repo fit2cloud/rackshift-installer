@@ -28,7 +28,7 @@ services:
     network_mode: host
     privileged: true
     volumes:
-      - ./rackhd/files/mount/common:/files
+      - ./rackhd/files/mount:/files
 
   # RackHD services
 
