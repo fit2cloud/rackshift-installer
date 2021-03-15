@@ -45,9 +45,6 @@ if [ ! $upgrade ]; then
   else
   printTitle "RackShift 服务 IP 地址: $serverIp"
   fi
-  cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
 fi
 ``
 colorMsg $yellow "\n\n开始安装 $systemName，版本 - $versionInfo"
@@ -229,6 +226,9 @@ if [ ! $upgrade ]; then
   cp ./rackshift.properties /opt/rackshift/conf
   cp ./.env /opt/rackshift
   mkdir -p /opt/rackshift/plugins
+  cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
 fi
 cp ./docker-compose.yml /opt/rackshift
 if [ -d ../plugins ]; then
