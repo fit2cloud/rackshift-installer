@@ -7,8 +7,8 @@ os=$(uname -a)
 if [ ! "$serverIp" ]; then
   printTitle "配置 RackShift 服务 IP 地址:"
   echo "请输入 RackShift 当前 IP 地址(与物理机 PXE 口属于同一个 VLAN )："
-  read serverIp
-  export serverIp=$serverIp
+  read ip
+  export serverIp=$ip
 else
   printTitle "RackShift 服务 IP 地址: $serverIp"
 fi
