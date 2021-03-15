@@ -36,6 +36,20 @@ echo "" >$installLog
 systemName=" RackShift 服务"
 versionInfo=$(cat ../rackhd/conf/version)
 
+##配置 rackshift IP
+if [ ! $upgrade ]; then
+  if [ ! "$serverIp" ]; then
+  printTitle "配置 RackShift 服务 IP 地址:"
+  echo "请输入 RackShift 当前 IP 地址(与物理机 PXE 口属于同一个 VLAN )："
+  read serverIp
+  else
+  printTitle "RackShift 服务 IP 地址: $serverIp"
+  fi
+  cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
+fi
+``
 colorMsg $yellow "\n\n开始安装 $systemName，版本 - $versionInfo"
 
 echo -e "\n"
@@ -243,20 +257,6 @@ if [ -f "/usr/bin/rsctl" ]; then
   rm -rf /usr/bin/rsctl
 fi
 ln -s /usr/local/bin/rsctl /usr/bin/rsctl
-
-##配置 rackshift IP
-if [ ! $upgrade ]; then
-  if [ ! "$serverIp" ]; then
-  printTitle "配置 RackShift 服务 IP 地址:"
-  echo "请输入 RackShift 当前 IP 地址(与物理机 PXE 口属于同一个 VLAN )："
-  read serverIp
-  else
-  printTitle "RackShift 服务 IP 地址: $serverIp"
-  fi
-  cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
-fi
 
 chkconfig rackshift on >>/dev/null
 echo -ne "启动 Docker 服务 \t........................ "
