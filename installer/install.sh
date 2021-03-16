@@ -150,10 +150,10 @@ else
     curl -fsSL https://get.docker.com -o get-docker.sh 2>&1 | tee -a $installLog
     sudo sh get-docker.sh --mirror Aliyun 2>&1 | tee -a $installLog
     echo "... 启动 docker"
-    service docker start 2>&1 | tee -a $installLog
   fi
 fi
 
+service docker start 2>&1 | tee -a $installLog
 docker ps 1>/dev/null 2>/dev/null
 if [ $? != 0 ]; then
   echo "Docker 未正常启动，请先安装并启动 Docker 服务后再次执行本脚本"
