@@ -153,7 +153,7 @@ else
   fi
 fi
 
-service docker start 2>&1 | tee -a $installLog
+systemctl start docker 2>&1 | tee -a $installLog
 docker ps 1>/dev/null 2>/dev/null
 if [ $? != 0 ]; then
   echo "Docker 未正常启动，请先安装并启动 Docker 服务后再次执行本脚本"
