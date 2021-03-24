@@ -13,17 +13,17 @@ cd rackshift-installer
 
 ```bash
 # 启动
-rsctl start
+./rsctl.sh start
 
 # 停止
-rsctl stop
+./rsctl.sh stop
 
 # 升级
-rsctl uninstall
+./rsctl.sh upgrade
 
 # 卸载
-rsctl uninstall
+./rsctl.sh uninstall
 
 # 帮助
-rsctl --help
+./rsctl.sh --help
 ```
