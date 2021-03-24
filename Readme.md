@@ -2,11 +2,11 @@
 
 installer 可以安装、部署、更新 管理 RackShift
 
-## 安装部署
+## 安装
 
 ```bash
-cd rackshift-installer/installer
-./install.sh
+cd rackshift-installer
+./rsctl.sh install
 ```
 
 ## 管理
