@@ -1,0 +1,20 @@
+version: '2.4'
+
+services:
+  rackshift:
+    depends_on:
+      - mysql
+
+  mysql:
+    image: rackshift/mysql:5.7.31
+    container_name: rs_mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - ${CONFIG_FILE}
+    ports:
+      - 3306:3306
+    volumes:
+      - ${CONFIG_DIR}/mysql/mysql.cnf:/etc/mysql/my.cnf
+      - ${CONFIG_DIR}/mysql/rackshift.sql:/docker-entrypoint-initdb.d/rackshift.sql
+      - ${VOLUME_DIR}/mysql/data:/var/lib/mysql

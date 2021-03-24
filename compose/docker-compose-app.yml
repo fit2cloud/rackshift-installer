@@ -1,0 +1,143 @@
+# Copyright 2016, EMC, Inc.
+
+version: '2.4'
+services:
+  mongo: # 27017
+    image: rackshift/mongo:latest
+    container_name: rs_mongo
+    network_mode: host
+    privileged: true
+
+  rabbitmq: # 5672, 15672
+    image: rackshift/rabbitmq:management
+    container_name: rs_rabbitmq
+    network_mode: host
+    privileged: true
+
+  dhcp: # 67/udp
+    image: rackshift/isc-dhcp-server:latest
+    container_name: rs_dhcp-server
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${VOLUME_DIR}/rackhd/dhcp:/var/lib/dhcp
+      - ${CONFIG_DIR}/rackhd/dhcp/config:/etc/dhcp
+      - ${CONFIG_DIR}/rackhd/dhcp/defaults:/etc/defaults
+
+  files:
+    image: rackshift/rackshift-files:${VERSION}
+    container_name: rs_files
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${VOLUME_DIR}/rackhd/files/mount:/files
+
+  # RackHD services
+
+  dhcp-proxy: # 68/udp, 4011
+    depends_on:
+      - dhcp
+      - mongo
+      - rabbitmq
+    image: rackshift/on-dhcp-proxy:${VERSION}
+    container_name: rs_dhcp-proxy
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${VOLUME_DIR}/rackhd/dhcp:/var/lib/dhcp
+      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+
+  http: # 9090, 9080
+    depends_on:
+      - files
+      - mongo
+      - rabbitmq
+    image: rackshift/on-http:${VERSION}
+    container_name: rs_web
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${VOLUME_DIR}/rackhd/files/mount/common:/RackHD/on-http/static/http/common
+      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+
+  syslog: # 514/udp
+    depends_on:
+      - mongo
+      - rabbitmq
+    image: rackshift/on-syslog:${VERSION}
+    container_name: rs_syslog
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+
+  taskgraph:
+    depends_on:
+      - dhcp
+      - mongo
+      - rabbitmq
+      - syslog
+    image: rackshift/rackshift-taskgraph:${VERSION}
+    container_name: rs_task
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+
+  tftp: # 69/udp
+    depends_on:
+      - files
+      - mongo
+      - rabbitmq
+      - syslog
+    image: rackshift/on-tftp:${VERSION}
+    container_name: rs_tftp
+    network_mode: host
+    privileged: true
+    volumes:
+      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+      - ${VOLUME_DIR}/rackhd/files/mount:/RackHD/on-tftp/static/tftp
+
+  # RackHD services
+
+  rackshift: # 8082
+    image: rackshift/rackshift:${VERSION}
+    container_name: rs_core
+    privileged: true
+    pid: host
+    ports:
+      - ${HTTP_PORT}:8082
+    depends_on:
+      - mysql
+      - rackshift-plugins
+    volumes:
+      - ${CONFIG_DIR}/rackshift.properties:/opt/rackshift/conf/rackshift.properties
+      - ${VOLUME_DIR}:/opt/rackshift
+      - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  rackshift-proxy: # 8083
+    image: rackshift/rackshift-proxy:${VERSION}
+    container_name: rs_proxy
+    privileged: true
+    ports:
+      - 8083:8083
+    volumes:
+      - ${CONFIG_DIR}/rackshift.properties:/opt/rackshift/conf/rackshift.properties
+      - ${VOLUME_DIR}:/opt/rackshift
+      - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  rackshift-plugins:
+    image: rackshift/rackshift-plugins:${VERSION}
+    container_name: rs_plugins
+    volumes:
+      - ${VOLUME_DIR}/plugins:/plugins
+
+  ipmitool:
+    image: rackshift/kfox1111/ipmitool:latest
+    container_name: rs_ipmitool
+
+  racadm:
+    image: rackshift/kciepluc/racadm-docker:latest
+    container_name: rs_racadm
