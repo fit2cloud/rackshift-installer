@@ -55,7 +55,7 @@ function install_docker() {
   fi
 
   if [[ "${docker_copy_failed}" != "0" ]]; then
-    echo_red "$(gettext 'Docker File copy failed. May be that docker service is already running. Please stop the running docker and re-execute it')"
+    echo_red "$(gettext 'Docker file copy failed. May be that docker service is already running. Please stop the running docker and re-execute it')"
     echo_red "systemctl stop docker"
     exit 1
   fi
@@ -122,7 +122,7 @@ function config_docker() {
     docker_storage_path="/var/lib/docker"
   fi
   confirm="n"
-  read_from_input confirm "$(gettext 'Do you need custom persistent store, will use the default directory') ${volume_dir}?" "y/n" "${confirm}"
+  read_from_input confirm "$(gettext 'Do you need custom docker root dir, will use the default directory') ${docker_storage_path}?" "y/n" "${confirm}"
 
   if [[ "${confirm}" == "y" ]]; then
     echo
@@ -201,7 +201,7 @@ function check_docker_start() {
 
 function main() {
   if [[ "${OS}" == 'Darwin' ]]; then
-    echo "$(gettext 'Skip docker installation on MacOS')"
+    echo "$(gettext 'Skip docker installation on macOS')"
     return
   fi
   echo_yellow "$(gettext 'Install Docker')"

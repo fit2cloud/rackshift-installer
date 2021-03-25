@@ -53,7 +53,7 @@ function pull_image() {
         docker tag "${DOCKER_IMAGE_PREFIX}/x-lab/${image}" "${image}"
         docker rmi -f "${DOCKER_IMAGE_PREFIX}/x-lab/${image}"
       else
-        log_error "未设置 DOCKER_IMAGE_PREFIX"
+        log_error "$(gettext 'Not set') DOCKER_IMAGE_PREFIX"
         exit 1
       fi
     fi

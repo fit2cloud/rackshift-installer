@@ -24,27 +24,30 @@ function pre_check() {
 }
 
 function usage() {
-  echo "RackShift 安装部署脚本"
+  echo "RackShift $(gettext 'Deployment Management Script')"
   echo
   echo "Usage: "
   echo "  rsctl [COMMAND] [ARGS...]"
   echo "  rsctl --help"
   echo
   echo "Installation Commands: "
-  echo "  status     检查 RackShift 服务"
-  echo "  reconfig   重设 RackShift 服务"
-  echo "  upgrade    升级 RackShift 版本"
+  echo "  status     $(gettext 'Status    RackShift')"
+  echo "  upgrade    $(gettext 'Upgrade   RackShift')"
+  echo "  reconfig   $(gettext 'Reconfig  RackShift')"
   echo
   echo "Management Commands: "
-  echo "  start      启动 RackShift 服务"
-  echo "  stop       停止 RackShift 服务"
-  echo "  down       下线 RackShift 服务"
-  echo "  restart    重启 RackShift 服务"
-  echo "  reload     重载 RackShift 服务"
-  echo "  uninstall  卸载 RackShift 服务"
+  echo "  start      $(gettext 'Start     RackShift')"
+  echo "  stop       $(gettext 'Stop      RackShift')"
+  echo "  down       $(gettext 'Down      RackShift')"
+  echo "  restart    $(gettext 'Restart   RackShift')"
+  echo "  uninstall  $(gettext 'Uninstall RackShift')"
   echo
   echo "More Commands: "
-  echo "  version    查看 RackShift 版本"
+  echo "  version            $(gettext 'View RackShift version')"
+  echo "  load_image         $(gettext 'Loading docker image')"
+  echo "  backup_db          $(gettext 'Backup database')"
+  echo "  restore_db [file]  $(gettext 'Data recovery through database backup file')"
+  echo
 }
 
 function service_to_docker_name() {
@@ -129,7 +132,7 @@ function main() {
         echo "./rsctl.sh restart"
         echo -e "\n\n"
       else
-        log_error "重置失败, 请重试或者检查数据库是否正常. "
+        log_error "$(gettext 'Reset failed, please try again or check whether the database is normal'). "
         exit 1
       fi
       ;;

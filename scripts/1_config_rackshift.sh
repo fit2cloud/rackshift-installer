@@ -24,7 +24,7 @@ function set_external_mysql() {
 
   test_mysql_connect ${mysql_host} ${mysql_port} ${mysql_user} ${mysql_pass} ${mysql_db}
   if [[ "$?" != "0" ]]; then
-    echo_red "测试连接数据库失败, 请重新设置"
+    echo_red "$(gettext 'Failed to connect to database, please reset')"
     echo
     set_mysql
   fi
@@ -96,13 +96,13 @@ function set_volume_dir() {
 }
 
 function set_server_ip() {
-  echo_yellow "\n设置服务 IP"
+  echo_yellow "\n$(gettext 'Set Service IP')"
   rackshift_ip=$(get_config RACKSHIFT_IP)
   if [[ -z "${rackshift_ip}" ]]; then
-    read_from_input rackshift_ip "请输入用作 RackShift 的服务器 IP（PXE 网卡） 地址: " "${rackshift_ip}"
+    read_from_input rackshift_ip "$(gettext 'Please enter the server IP (PXE network) address to use as rackshift'): " "${rackshift_ip}"
   fi
   confirm="y"
-  read_from_input confirm "是否使用 IP 地址 ${rackshift_ip}?" "y/n" "${confirm}"
+  read_from_input confirm "$(gettext 'Use IP address') ${rackshift_ip}?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
     sed -i "s/172.31.128.1/${rackshift_ip}/g" ${config_dir}/mysql/rackshift.sql
     sed -i "s/172.31.128.1/${rackshift_ip}/g" ${config_dir}/rackhd/monorail/config.json

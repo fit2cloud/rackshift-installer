@@ -195,7 +195,7 @@ function log_error() {
 
 function get_docker_compose_services() {
   ignore_db="$1"
-  services="mongo rabbitmq dhcp-server files dhcp-proxy web syslog task tftp core proxy plugins ipmitool racadm"
+  services="mongo rabbitmq dhcp-server files dhcp-proxy http syslog task tftp core proxy plugins ipmitool racadm"
   use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
   if [[ "${use_external_mysql}" != "1" && "${ignore_db}" != "ignore_db" ]]; then
     services+=" mysql"
@@ -231,7 +231,7 @@ function install_required_pkg() {
   elif command -v apk > /dev/null; then
     apk add -q $required_pkg
   else
-    echo_red "请先安装 $required_pkg "
+    echo_red "$(gettext 'Please install it first') $required_pkg"
     exit 1
   fi
 }

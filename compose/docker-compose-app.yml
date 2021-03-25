@@ -53,7 +53,7 @@ services:
       - mongo
       - rabbitmq
     image: rackshift/on-http:${VERSION}
-    container_name: rs_web
+    container_name: rs_http
     network_mode: host
     privileged: true
     volumes:

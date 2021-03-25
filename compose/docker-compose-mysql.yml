@@ -18,3 +18,9 @@ services:
       - ${CONFIG_DIR}/mysql/mysql.cnf:/etc/mysql/my.cnf
       - ${CONFIG_DIR}/mysql/rackshift.sql:/docker-entrypoint-initdb.d/rackshift.sql
       - ${VOLUME_DIR}/mysql/data:/var/lib/mysql
+    healthcheck:
+      test: "mysql -uroot -h127.0.0.1 -p$$MYSQL_ROOT_PASSWORD -e 'SHOW DATABASES;'"
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
