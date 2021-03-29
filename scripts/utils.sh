@@ -242,6 +242,19 @@ function prepare_online_install_required_pkg() {
   done
 }
 
+function prepare_set_redhat_firewalld() {
+  if [[ -f "/etc/redhat-release" ]]; then
+    if [[ "$(firewall-cmd --state)" == "running" ]]; then
+      if command -v dnf > /dev/null; then
+        if [[ ! "$(firewall-cmd --list-all | grep 'masquerade: yes')" ]]; then
+          firewall-cmd --permanent --add-masquerade
+          firewall-cmd --reload
+        fi
+      fi
+    fi
+  fi
+}
+
 function echo_logo() {
   cat << "EOF"
 
