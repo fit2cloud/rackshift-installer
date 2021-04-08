@@ -94,7 +94,7 @@ services:
   # RackHD services
 
   rackshift: # 8082
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rackshift:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rackshift:v1.0.1
     privileged: true
     pid: host
     ports:
