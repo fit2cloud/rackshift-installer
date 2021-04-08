@@ -134,7 +134,7 @@ fi
 
 #docker环境检测
 echo -ne "Docker 检测 \t\t........................ "
-docker ps 1>/dev/null 2>/dev/null
+systemctl start docker 1>/dev/null 2>/dev/null
 if [ $? -eq 0 ]; then
   colorMsg $green '[OK]'
 else
@@ -152,7 +152,7 @@ else
     echo "... 启动 docker"
   fi
 fi
-
+systemctl enable docker 2>&1 | tee -a $installLog
 systemctl start docker 2>&1 | tee -a $installLog
 docker ps 1>/dev/null 2>/dev/null
 if [ $? != 0 ]; then
@@ -216,7 +216,7 @@ fi
 if [ ! $upgrade ]; then
   printTitle "配置  RackShift服务"
   echo -ne "配置  RackShift服务 \t........................ "
-  mkdir -p /opt/rackshift/
+  mkdir -p /opt/rackshift/logs
   cp -rpf ../rackhd /opt/rackshift
   cp rsctl /etc/init.d/rackshift
   chmod a+x /etc/init.d/rackshift
