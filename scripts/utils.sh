@@ -154,9 +154,9 @@ function check_md5() {
 function is_running() {
   ps axu | grep -v grep | grep $1 &>/dev/null
   if [[ "$?" == "0" ]]; then
-    echo 1
-  else
     echo 0
+  else
+    echo 1
   fi
 }
 
@@ -253,6 +253,65 @@ function prepare_set_redhat_firewalld() {
       fi
     fi
   fi
+}
+
+function prepare_config() {
+  cwd=$(pwd)
+  cd "${PROJECT_DIR}" || exit
+
+  config_dir=$(dirname "${CONFIG_FILE}")
+  echo_yellow "1. $(gettext 'Check Configuration File')"
+  echo "$(gettext 'Path to Configuration file'): ${config_dir}"
+  if [[ ! -d ${config_dir} ]]; then
+    mkdir -p ${config_dir}
+    cp config-example.txt "${CONFIG_FILE}"
+  fi
+  if [[ ! -f ${CONFIG_FILE} ]]; then
+    cp config-example.txt "${CONFIG_FILE}"
+  else
+    echo -e "${CONFIG_FILE}  [\033[32m √ \033[0m]"
+  fi
+  if [[ ! -f .env ]]; then
+    ln -s "${CONFIG_FILE}" .env
+  if [[ ! -f "./compose/.env" ]]; then
+    ln -s "${CONFIG_FILE}" ./compose/.env
+  fi
+  if [[ ! -f "${config_dir}/rackshift.properties" ]]; then
+    cp config_init/rackshift.properties ${config_dir}
+  else
+    echo -e "${config_dir}/rackshift.properties  [\033[32m √ \033[0m]"
+  fi
+  if [[ ! -d "${config_dir}/rackshift" ]]; then
+    cp -R config_init/rackhd ${config_dir}
+  fi
+  if [[ ! -d "${config_dir}/mysql" ]]; then
+    cp -R config_init/mysql ${config_dir}
+  fi
+  for file in $(ls config_init/mysql); do
+    if [[ ! -f "${config_dir}/mysql/${file}" ]]; then
+      cp config_init/mysql/${file} ${config_dir}/mysql/
+    else
+      echo -e "${config_dir}/mysql/${file}  [\033[32m √ \033[0m]"
+    fi
+  done
+  if [[ ! -f "${config_dir}/rackhd/monorail/config.json" ]]; then
+    cp config_init/rackhd/monorail/config.json.bak ${config_dir}/rackhd/monorail/config.json
+  else
+    echo -e "${config_dir}/rackhd/monorail/config.json  [\033[32m √ \033[0m]"
+  fi
+  if [ -d plugins ]; then
+    \cp -rf ../plugins/* ${config_dir}
+  fi
+  echo_done
+
+  backup_dir="${config_dir}/backup"
+  mkdir -p "${backup_dir}"
+  now=$(date +'%Y-%m-%d_%H-%M-%S')
+  backup_config_file="${backup_dir}/config.txt.${now}"
+  echo_yellow "\n2. $(gettext 'Backup Configuration File')"
+  cp "${CONFIG_FILE}" "${backup_config_file}"
+  echo "$(gettext 'Back up to') ${backup_config_file}"
+  echo_done
 }
 
 function echo_logo() {

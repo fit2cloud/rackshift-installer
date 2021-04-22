@@ -8,7 +8,7 @@ IMAGE_DIR="images"
 DOCKER_IMAGE_PREFIX="${DOCKER_IMAGE_PREFIX-}"
 USE_XPACK="${USE_XPACK-0}"
 
-function prepare_config() {
+function prepare_config_xpack() {
   if [[ "${USE_XPACK}" == "1" ]]; then
     sed -i 's@USE_XPACK=.*@USE_XPACK=1@g' "${PROJECT_DIR}"/config-example.txt
   fi
@@ -102,7 +102,7 @@ function prepare_image_files() {
 
 function main() {
   prepare_online_install_required_pkg
-  prepare_config
+  prepare_config_xpack
 
   echo "1. $(gettext 'Preparing Docker offline package')"
   prepare_docker_bin

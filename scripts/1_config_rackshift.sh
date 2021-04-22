@@ -6,6 +6,30 @@ PROJECT_DIR=$(dirname ${BASE_DIR})
 # shellcheck source=./util.sh
 . "${BASE_DIR}/utils.sh"
 
+function set_volume_dir() {
+  echo_yellow "1. $(gettext 'Configure Persistent Directory')"
+  volume_dir=$(get_config VOLUME_DIR)
+  if [[ -z "${volume_dir}" ]]; then
+    volume_dir="/opt/rackshift"
+  fi
+  confirm="n"
+  read_from_input confirm "$(gettext 'Do you need custom persistent store, will use the default directory') ${volume_dir}?" "y/n" "${confirm}"
+  if [[ "${confirm}" == "y" ]]; then
+    echo
+    echo "$(gettext 'To modify the persistent directory such as logs video, you can select your largest disk and create a directory in it, such as') /opt/rackshift"
+    echo "$(gettext 'Note: you can not change it after installation, otherwise the database may be lost')"
+    echo
+    df -h | egrep -v "map|devfs|tmpfs|overlay|shm"
+    echo
+    read_from_input volume_dir "$(gettext 'Persistent storage directory')" "" "${volume_dir}"
+  fi
+  if [[ ! -d "${volume_dir}" ]]; then
+    mkdir -p ${volume_dir}
+  fi
+  set_config VOLUME_DIR ${volume_dir}
+  echo_done
+}
+
 function set_external_mysql() {
   mysql_host=$(get_config DB_HOST)
   read_from_input mysql_host "$(gettext 'Please enter MySQL server IP')" "" "${mysql_host}"
@@ -55,7 +79,7 @@ function set_internal_mysql() {
 }
 
 function set_mysql() {
-  echo_yellow "\n$(gettext 'Configure MySQL')"
+  echo_yellow "\n2. $(gettext 'Configure MySQL')"
   use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
   confirm="n"
   if [[ "${use_external_mysql}" == "1" ]]; then
@@ -71,32 +95,8 @@ function set_mysql() {
   echo_done
 }
 
-function set_volume_dir() {
-  echo_yellow "\n$(gettext 'Configure Persistent Directory')"
-  volume_dir=$(get_config VOLUME_DIR)
-  if [[ -z "${volume_dir}" ]]; then
-    volume_dir="/opt/rackshift"
-  fi
-  confirm="n"
-  read_from_input confirm "$(gettext 'Do you need custom persistent store, will use the default directory') ${volume_dir}?" "y/n" "${confirm}"
-  if [[ "${confirm}" == "y" ]]; then
-    echo
-    echo "$(gettext 'To modify the persistent directory such as logs video, you can select your largest disk and create a directory in it, such as') /opt/rackshift"
-    echo "$(gettext 'Note: you can not change it after installation, otherwise the database may be lost')"
-    echo
-    df -h | egrep -v "map|devfs|tmpfs|overlay|shm"
-    echo
-    read_from_input volume_dir "$(gettext 'Persistent storage directory')" "" "${volume_dir}"
-  fi
-  if [[ ! -d "${volume_dir}" ]]; then
-    mkdir -p ${volume_dir}
-  fi
-  set_config VOLUME_DIR ${volume_dir}
-  echo_done
-}
-
 function set_server_ip() {
-  echo_yellow "\n$(gettext 'Set Service IP')"
+  echo_yellow "\n3. $(gettext 'Set Service IP')"
   rackshift_ip=$(get_config RACKSHIFT_IP)
   if [[ -z "${rackshift_ip}" ]]; then
     read_from_input rackshift_ip "$(gettext 'Please enter the server IP (PXE network) address to use as rackshift'): " "${rackshift_ip}"
@@ -113,68 +113,7 @@ function set_server_ip() {
   echo_done
 }
 
-function prepare_config() {
-  cwd=$(pwd)
-  cd "${PROJECT_DIR}" || exit
-
-  config_dir=$(dirname "${CONFIG_FILE}")
-  echo_yellow "1. $(gettext 'Check Configuration File')"
-  echo "$(gettext 'Path to Configuration file'): ${config_dir}"
-  if [[ ! -d ${config_dir} ]]; then
-    config_dir_parent=$(dirname "${config_dir}")
-    mkdir -p "${config_dir_parent}"
-    cp config-example.txt "${CONFIG_FILE}"
-  fi
-  if [[ ! -f ${CONFIG_FILE} ]]; then
-    cp config-example.txt "${CONFIG_FILE}"
-  else
-    echo -e "${CONFIG_FILE}  [\033[32m √ \033[0m]"
-  fi
-  if [[ ! -f .env ]]; then
-    ln -s "${CONFIG_FILE}" .env
-  fi
-  if [[ ! -f "${config_dir}/rackshift.properties" ]]; then
-    cp config_init/rackshift.properties ${config_dir}
-  else
-    echo -e "${config_dir}/rackshift.properties  [\033[32m √ \033[0m]"
-  fi
-  if [[ ! -d "${config_dir}/rackshift" ]]; then
-    cp -R config_init/rackhd ${config_dir}
-  fi
-  if [[ ! -d "${config_dir}/mysql" ]]; then
-    cp -R config_init/mysql ${config_dir}
-  fi
-  for file in $(ls config_init/mysql); do
-    if [[ ! -f "${config_dir}/mysql/${file}" ]]; then
-      cp config_init/mysql/${file} ${config_dir}/mysql/
-    else
-      echo -e "${config_dir}/mysql/${file}  [\033[32m √ \033[0m]"
-    fi
-  done
-  if [[ ! -f "${config_dir}/rackhd/monorail/config.json" ]]; then
-    cp config_init/rackhd/monorail/config.json.bak ${config_dir}/rackhd/monorail/config.json
-  else
-    echo -e "${config_dir}/rackhd/monorail/config.json  [\033[32m √ \033[0m]"
-  fi
-  if [ -d plugins ]; then
-    \cp -rf ../plugins/* ${config_dir}
-  fi
-  echo_done
-
-  backup_dir="${config_dir}/backup"
-  mkdir -p "${backup_dir}"
-  now=$(date +'%Y-%m-%d_%H-%M-%S')
-  backup_config_file="${backup_dir}/config.txt.${now}"
-  echo_yellow "\n3. $(gettext 'Backup Configuration File')"
-  cp "${CONFIG_FILE}" "${backup_config_file}"
-  echo "$(gettext 'Back up to') ${backup_config_file}"
-  echo_done
-
-  cd "${cwd}" || exit
-}
-
 function main() {
-  prepare_config
   set_volume_dir
   set_mysql
   set_server_ip

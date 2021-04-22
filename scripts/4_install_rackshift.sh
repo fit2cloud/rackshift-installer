@@ -17,21 +17,21 @@ function post_install() {
   fi
   HTTP_PORT=$(get_config HTTP_PORT)
 
-  echo_yellow "$(gettext 'You can use the following command to start, and then visit')"
+  echo_yellow "1. $(gettext 'You can use the following command to start, and then visit')"
   echo "./rsctl.sh start"
 
-  echo_yellow "\n$(gettext 'Other management commands')"
+  echo_yellow "\n2. $(gettext 'Other management commands')"
   echo "./rsctl.sh stop"
   echo "./rsctl.sh restart"
   echo "./rsctl.sh backup"
   echo "./rsctl.sh upgrade"
   echo "$(gettext 'For more commands, you can enter ./rsctl.sh --help to understand')"
 
-  echo_yellow "\n$(gettext 'Web access')"
+  echo_yellow "\n3. $(gettext 'Web access')"
   echo "http://${HOST}:${HTTP_PORT}"
   echo "$(gettext 'Default username'): admin  $(gettext 'Default password'): 123"
 
-  echo_yellow "\n$(gettext 'More information')"
+  echo_yellow "\n4. $(gettext 'More information')"
   echo "$(gettext 'Offical Website'): https://www.rackshift.io/"
   echo "$(gettext 'Documentation'): https://docs.rackshift.io/"
   echo -e "\n\n"
@@ -62,6 +62,7 @@ function main() {
   echo_logo
   set_lang
   pre_install
+  prepare_config
   echo_green "\n>>> $(gettext 'Install and Configure Docker')"
   (bash "${BASE_DIR}/2_install_docker.sh")
   echo_green "\n>>> $(gettext 'Loading Docker Image')"

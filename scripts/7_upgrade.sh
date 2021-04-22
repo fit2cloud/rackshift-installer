@@ -54,16 +54,16 @@ function main() {
     export VERSION=${to_version}
   fi
 
-  echo_yellow "\n$(gettext 'Check program file changes')"
+  echo_yellow "\n1. $(gettext 'Check program file changes')"
   update_proc_if_need || (echo_failed; exit  4)
 
-  echo_yellow "\n$(gettext 'Upgrade Docker image')"
+  echo_yellow "\n2. $(gettext 'Upgrade Docker image')"
   bash "${SCRIPT_DIR}/3_load_images.sh" && echo_done || (echo_failed; exit  5)
 
-  echo_yellow "\n$(gettext 'Backup database')"
+  echo_yellow "\n3. $(gettext 'Backup database')"
   backup_db || exit 2
 
-  echo_yellow "\n$(gettext 'Upgrade successfully. You can now restart the program')"
+  echo_yellow "\n4. $(gettext 'Upgrade successfully. You can now restart the program')"
   echo "./rsctl.sh restart"
   echo -e "\n\n"
 }

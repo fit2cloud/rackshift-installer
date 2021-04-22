@@ -205,12 +205,12 @@ function main() {
     echo "$(gettext 'Skip docker installation on macOS')"
     return
   fi
-  echo_yellow "$(gettext 'Install Docker')"
+  echo_yellow "1. $(gettext 'Install Docker')"
   check_docker_install
   check_compose_install
-  echo_yellow "\n$(gettext 'Configure Docker')"
+  echo_yellow "\n2. $(gettext 'Configure Docker')"
   check_docker_config
-  echo_yellow "\n$(gettext 'Start Docker')"
+  echo_yellow "\n3. $(gettext 'Start Docker')"
   check_docker_start
 }
 
