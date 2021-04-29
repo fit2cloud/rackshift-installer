@@ -5,17 +5,17 @@ version: '2'
 services:
 
   mongo: # 27017
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/mongo:latest
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/mongo:latest
     network_mode: host
     privileged: true
 
   rabbitmq: # 5672, 15672
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rabbitmq:management
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rabbitmq:management
     network_mode: host
     privileged: true
 
   dhcp: # 67/udp
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/isc-dhcp-server:latest
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/isc-dhcp-server:latest
     network_mode: host
     privileged: true
     volumes:
@@ -24,7 +24,7 @@ services:
       - ./rackhd/dhcp/defaults:/etc/defaults
 
   files:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rackshift-files:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-files:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -37,7 +37,7 @@ services:
       - dhcp
       - mongo
       - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rackhd/on-dhcp-proxy:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-dhcp-proxy:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -49,7 +49,7 @@ services:
       - files
       - mongo
       - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/on-http:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-http:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -60,7 +60,7 @@ services:
     depends_on:
       - mongo
       - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/on-syslog:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-syslog:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -84,7 +84,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/on-tftp:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-tftp:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -108,7 +108,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   mysql:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/mysql:5.7.31
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     volumes:
@@ -121,7 +121,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin
 
   rackshift-proxy: # 8083
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rackshift-proxy:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
     privileged: true
     ports:
       - 8083:8083
@@ -131,13 +131,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/rackshift-plugins:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.0.0
     volumes:
       - /opt/rackshift/plugins:/plugins
 
   ipmitool:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/kfox1111/ipmitool:latest
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool:latest
 
   racadm:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/kciepluc/racadm-docker:latest
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker:latest
 
