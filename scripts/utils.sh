@@ -19,13 +19,12 @@ function random_str() {
   if [[ -z ${len} ]]; then
     len=16
   fi
-  command -v ifconfig &>/dev/null
+  command -v dmidecode &>/dev/null
   if [[ "$?" == "0" ]]; then
-    cmd=ifconfig
+    dmidecode -t 1 | grep UUID | awk '{print $2}' | base64 | head -c ${len}; echo
   else
-    cmd="ip a"
+    cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${len}; echo
   fi
-  sh -c "${cmd}" | tail -10 | base64 | head -c ${len}
 }
 
 function has_config() {
@@ -76,7 +75,7 @@ function test_mysql_connect() {
   password=$4
   db=$5
   command="CREATE TABLE IF NOT EXISTS test(id INT); DROP TABLE test;"
-  docker run -it --rm rackshift/mysql:5.7.31 mysql -h${host} -P${port} -u${user} -p${password} ${db} -e "${command}" 2>/dev/null
+  docker run -it --rm x-lab/mysql:5.7.31 mysql -h${host} -P${port} -u${user} -p${password} ${db} -e "${command}" 2>/dev/null
 }
 
 function get_images() {
@@ -85,21 +84,21 @@ function get_images() {
     scope="$1"
   fi
   images=(
-    "rackshift/mysql:5.7.31"
-    "rackshift/mongo:latest"
-    "rackshift/rabbitmq:management"
-    "rackshift/isc-dhcp-server:latest"
-    "rackshift/kfox1111/ipmitool:latest"
-    "rackshift/kciepluc/racadm-docker:latest"
-    "rackshift/rackshift-files:${VERSION}"
-    "rackshift/on-dhcp-proxy:${VERSION}"
-    "rackshift/on-http:${VERSION}"
-    "rackshift/on-syslog:${VERSION}"
-    "rackshift/rackshift-taskgraph:${VERSION}"
-    "rackshift/on-tftp:${VERSION}"
-    "rackshift/rackshift:${VERSION}"
-    "rackshift/rackshift-proxy:${VERSION}"
-    "rackshift/rackshift-plugins:${VERSION}"
+    "x-lab/mysql:5.7.31"
+    "x-lab/mongo:latest"
+    "x-lab/rabbitmq:management"
+    "x-lab/isc-dhcp-server:latest"
+    "x-lab/ipmitool:latest"
+    "x-lab/racadm-docker:latest"
+    "x-lab/rackshift-files:v1.0.0"
+    "x-lab/on-dhcp-proxy:v1.0.0"
+    "x-lab/on-http:v1.0.0"
+    "x-lab/on-syslog:v1.0.0"
+    "x-lab/rackshift-taskgraph:v1.0.0"
+    "x-lab/on-tftp:v1.0.0"
+    "x-lab/rackshift:${VERSION}"
+    "x-lab/rackshift-proxy:v1.0.0"
+    "x-lab/rackshift-plugins:v1.0.0"
   )
   for image in "${images[@]}"; do
     echo "${image}"

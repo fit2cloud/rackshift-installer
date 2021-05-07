@@ -25,9 +25,9 @@ function main() {
   fi
 
   if [[ "${DB_FILE}" == *".gz" ]]; then
-    gunzip <${DB_FILE} | docker run --rm -i rackshift/mysql:5.7.31 ${restore_cmd}
+    gunzip <${DB_FILE} | docker run --rm -i x-lab/mysql:5.7.31 ${restore_cmd}
   else
-    docker run --rm -i rackshift/mysql:5.7.31 $restore_cmd <"${DB_FILE}"
+    docker run --rm -i x-lab/mysql:5.7.31 $restore_cmd <"${DB_FILE}"
   fi
   code="x$?"
   if [[ "$code" != "x0" ]]; then

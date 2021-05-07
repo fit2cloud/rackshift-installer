@@ -33,6 +33,9 @@ function set_volume_dir() {
 function set_external_mysql() {
   mysql_host=$(get_config DB_HOST)
   read_from_input mysql_host "$(gettext 'Please enter MySQL server IP')" "" "${mysql_host}"
+  if [[ "${mysql_host}" == "127.0.0.1" ]]; then
+    mysql_host=$(hostname -I | cut -d ' ' -f1)
+  fi
 
   mysql_port=$(get_config DB_PORT)
   read_from_input mysql_port "$(gettext 'Please enter MySQL server port')" "" "${mysql_port}"

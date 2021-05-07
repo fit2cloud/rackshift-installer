@@ -6,7 +6,7 @@ services:
       - mysql
 
   mysql:
-    image: rackshift/mysql:5.7.31
+    image: x-lab/mysql:5.7.31
     container_name: rs_mysql
     restart: always
     command: --default-authentication-plugin=mysql_native_password
@@ -23,4 +23,4 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 20s

@@ -3,19 +3,19 @@
 version: '2.4'
 services:
   mongo: # 27017
-    image: rackshift/mongo:latest
+    image: x-lab/mongo:latest
     container_name: rs_mongo
     network_mode: host
     privileged: true
 
   rabbitmq: # 5672, 15672
-    image: rackshift/rabbitmq:management
+    image: x-lab/rabbitmq:management
     container_name: rs_rabbitmq
     network_mode: host
     privileged: true
 
   dhcp: # 67/udp
-    image: rackshift/isc-dhcp-server:latest
+    image: x-lab/isc-dhcp-server:latest
     container_name: rs_dhcp-server
     network_mode: host
     privileged: true
@@ -25,7 +25,7 @@ services:
       - ${CONFIG_DIR}/rackhd/dhcp/defaults:/etc/defaults
 
   files:
-    image: rackshift/rackshift-files:${VERSION}
+    image: x-lab/rackshift-files:v1.0.0
     container_name: rs_files
     network_mode: host
     privileged: true
@@ -39,7 +39,7 @@ services:
       - dhcp
       - mongo
       - rabbitmq
-    image: rackshift/on-dhcp-proxy:${VERSION}
+    image: x-lab/on-dhcp-proxy:v1.0.0
     container_name: rs_dhcp-proxy
     network_mode: host
     privileged: true
@@ -52,7 +52,7 @@ services:
       - files
       - mongo
       - rabbitmq
-    image: rackshift/on-http:${VERSION}
+    image: x-lab/on-http:v1.0.0
     container_name: rs_http
     network_mode: host
     privileged: true
@@ -64,7 +64,7 @@ services:
     depends_on:
       - mongo
       - rabbitmq
-    image: rackshift/on-syslog:${VERSION}
+    image: x-lab/on-syslog:v1.0.0
     container_name: rs_syslog
     network_mode: host
     privileged: true
@@ -77,7 +77,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: rackshift/rackshift-taskgraph:${VERSION}
+    image: x-lab/rackshift-taskgraph:v1.0.0
     container_name: rs_task
     network_mode: host
     privileged: true
@@ -90,7 +90,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: rackshift/on-tftp:${VERSION}
+    image: x-lab/on-tftp:v1.0.0
     container_name: rs_tftp
     network_mode: host
     privileged: true
@@ -101,43 +101,42 @@ services:
   # RackHD services
 
   rackshift: # 8082
-    image: rackshift/rackshift:${VERSION}
+    image: x-lab/rackshift:${VERSION}
     container_name: rs_core
     privileged: true
     pid: host
     ports:
       - ${HTTP_PORT}:8082
     depends_on:
-      - mysql
       - rackshift-plugins
     volumes:
-      - ${CONFIG_DIR}/rackshift.properties:/opt/rackshift/conf/rackshift.properties
+      - ${CONFIG_DIR}/rackshift.properties:/opt/x-lab/conf/rackshift.properties
       - ${VOLUME_DIR}:/opt/rackshift
-      - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - ${VOLUME_DIR}/rackhd/files/common:/opt/x-lab/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-proxy: # 8083
-    image: rackshift/rackshift-proxy:${VERSION}
+    image: x-lab/rackshift-proxy:v1.0.0
     container_name: rs_proxy
     privileged: true
     ports:
       - 8083:8083
     volumes:
-      - ${CONFIG_DIR}/rackshift.properties:/opt/rackshift/conf/rackshift.properties
+      - ${CONFIG_DIR}/rackshift.properties:/opt/x-lab/conf/rackshift.properties
       - ${VOLUME_DIR}:/opt/rackshift
-      - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - ${VOLUME_DIR}/rackhd/files/common:/opt/x-lab/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
-    image: rackshift/rackshift-plugins:${VERSION}
+    image: x-lab/rackshift-plugins:v1.0.0
     container_name: rs_plugins
     volumes:
       - ${VOLUME_DIR}/plugins:/plugins
 
   ipmitool:
-    image: rackshift/kfox1111/ipmitool:latest
+    image: x-lab/ipmitool:latest
     container_name: rs_ipmitool
 
   racadm:
-    image: rackshift/kciepluc/racadm-docker:latest
+    image: x-lab/racadm-docker:latest
     container_name: rs_racadm
