@@ -3,7 +3,8 @@ version: '2.4'
 services:
   rackshift:
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
   mysql:
     image: x-lab/mysql:5.7.31

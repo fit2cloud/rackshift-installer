@@ -95,7 +95,7 @@ services:
     network_mode: host
     privileged: true
     volumes:
-      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
       - ${VOLUME_DIR}/rackhd/files/mount:/RackHD/on-tftp/static/tftp
 
   # RackHD services
@@ -110,9 +110,8 @@ services:
     depends_on:
       - rackshift-plugins
     volumes:
-      - ${CONFIG_DIR}/rackshift.properties:/opt/x-lab/conf/rackshift.properties
       - ${VOLUME_DIR}:/opt/rackshift
-      - ${VOLUME_DIR}/rackhd/files/common:/opt/x-lab/rackhd/files/common
+      - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-proxy: # 8083
@@ -122,9 +121,9 @@ services:
     ports:
       - 8083:8083
     volumes:
-      - ${CONFIG_DIR}/rackshift.properties:/opt/x-lab/conf/rackshift.properties
+      - ${CONFIG_DIR}/rackhd/dhcp/config/dhcpd.conf:/opt/rackshift/rackhd/dhcp/config/dhcpd.conf
       - ${VOLUME_DIR}:/opt/rackshift
-      - ${VOLUME_DIR}/rackhd/files/common:/opt/x-lab/rackhd/files/common
+      - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:

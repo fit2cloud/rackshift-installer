@@ -239,6 +239,51 @@ function prepare_online_install_required_pkg() {
 function prepare_set_redhat_firewalld() {
   if [[ -f "/etc/redhat-release" ]]; then
     if [[ "$(firewall-cmd --state)" == "running" ]]; then
+      if [[ "$?" == "0" ]]; then
+        if [[ ! "$(firewall-cmd --list-ports | grep 80/tcp)" ]]; then
+          firewall-cmd --zone=public --add-port=80/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 8080/tcp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=8080/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 8083/tcp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=8083/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 8443/tcp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=8443/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 9080/tcp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=9080/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 9090/tcp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=9090/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 9030/tcp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=9030/tcp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 4011/udp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=4011/udp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 67/udp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=67/udp
+          flag=1
+        fi
+        if [[ ! "$(firewall-cmd --list-ports | grep 69/udp)" ]]; then
+          firewall-cmd --permanent --zone=public --add-port=69/udp
+          flag=1
+        fi
+        if [[ $flag ]]; then
+          firewall-cmd --reload
+        fi
+      fi
       if command -v dnf > /dev/null; then
         if [[ ! "$(firewall-cmd --list-all | grep 'masquerade: yes')" ]]; then
           firewall-cmd --permanent --add-masquerade
@@ -251,55 +296,62 @@ function prepare_set_redhat_firewalld() {
 
 function prepare_config() {
   cwd=$(pwd)
-  cd "${PROJECT_DIR}" || exit
+  cd "${PROJECT_DIR}" || exit 1
 
-  config_dir=$(dirname "${CONFIG_FILE}")
+  conf_dir=$(dirname ${CONFIG_DIR})
   echo_yellow "1. $(gettext 'Check Configuration File')"
-  echo "$(gettext 'Path to Configuration file'): ${config_dir}"
-  if [[ ! -d ${config_dir} ]]; then
-    mkdir -p ${config_dir}
+  echo "$(gettext 'Path to Configuration file'): ${CONFIG_DIR}"
+  if [[ ! -d "${CONFIG_DIR}" ]]; then
+    mkdir -p ${CONFIG_DIR}
     cp config-example.txt "${CONFIG_FILE}"
   fi
-  if [[ ! -f ${CONFIG_FILE} ]]; then
+  if [[ ! -f "${CONFIG_FILE}" ]]; then
     cp config-example.txt "${CONFIG_FILE}"
   else
     echo -e "${CONFIG_FILE}  [\033[32m √ \033[0m]"
   fi
   if [[ ! -f .env ]]; then
     ln -s "${CONFIG_FILE}" .env
+  fi
   if [[ ! -f "./compose/.env" ]]; then
     ln -s "${CONFIG_FILE}" ./compose/.env
   fi
-  if [[ ! -f "${config_dir}/rackshift.properties" ]]; then
-    cp config_init/rackshift.properties ${config_dir}
-  else
-    echo -e "${config_dir}/rackshift.properties  [\033[32m √ \033[0m]"
+  if [[ ! -d "${CONFIG_DIR}/rackshift" ]]; then
+    cp -R config_init/rackhd ${CONFIG_DIR}
   fi
-  if [[ ! -d "${config_dir}/rackshift" ]]; then
-    cp -R config_init/rackhd ${config_dir}
-  fi
-  if [[ ! -d "${config_dir}/mysql" ]]; then
-    cp -R config_init/mysql ${config_dir}
+  if [[ ! -d "${CONFIG_DIR}/mysql" ]]; then
+    cp -R config_init/mysql ${CONFIG_DIR}
   fi
   for file in $(ls config_init/mysql); do
-    if [[ ! -f "${config_dir}/mysql/${file}" ]]; then
-      cp config_init/mysql/${file} ${config_dir}/mysql/
+    if [[ ! -f "${CONFIG_DIR}/mysql/${file}" ]]; then
+      cp config_init/mysql/${file} ${CONFIG_DIR}/mysql/
     else
-      echo -e "${config_dir}/mysql/${file}  [\033[32m √ \033[0m]"
+      echo -e "${CONFIG_DIR}/mysql/${file}  [\033[32m √ \033[0m]"
     fi
   done
-  if [[ ! -f "${config_dir}/rackhd/monorail/config.json" ]]; then
-    cp config_init/rackhd/monorail/config.json.bak ${config_dir}/rackhd/monorail/config.json
+  if [[ ! -f "${CONFIG_DIR}/rackhd/monorail/config.json" ]]; then
+    cp config_init/rackhd/monorail/config.json.bak ${CONFIG_DIR}/rackhd/monorail/config.json
   else
-    echo -e "${config_dir}/rackhd/monorail/config.json  [\033[32m √ \033[0m]"
+    echo -e "${CONFIG_DIR}/rackhd/monorail/config.json  [\033[32m √ \033[0m]"
+  fi
+  if [[ ! -d "${conf_dir}/conf" ]]; then
+    mkdir -p ${conf_dir}/conf
+    cp config_init/conf/rackshift.properties ${conf_dir}/conf/
+  fi
+  if [[ ! -f "${conf_dir}/conf/rackshift.properties" ]]; then
+    cp config_init/conf/rackshift.properties ${conf_dir}/conf/
+  else
+    echo -e "${conf_dir}/conf/rackshift.properties  [\033[32m √ \033[0m]"
   fi
   if [ -d plugins ]; then
-    \cp -rf ../plugins/* ${config_dir}
+    \cp -rf ../plugins/* ${CONFIG_DIR}
   fi
   echo_done
 
-  backup_dir="${config_dir}/backup"
-  mkdir -p "${backup_dir}"
+  backup_dir="${CONFIG_DIR}/backup"
+  if [[ ! -d "${backup_dir}" ]]; then
+    mkdir -p "${backup_dir}"
+  fi
   now=$(date +'%Y-%m-%d_%H-%M-%S')
   backup_config_file="${backup_dir}/config.txt.${now}"
   echo_yellow "\n2. $(gettext 'Backup Configuration File')"

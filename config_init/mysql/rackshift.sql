@@ -8,7 +8,7 @@ File Encoding         : 65001
 
 Date: 2020-09-25 22:22:08
 */
-CREATE DATABASE rackshift;
+CREATE DATABASE IF NOT EXISTS rackshift;
 USE rackshift;
 
 set character_set_client = utf8;

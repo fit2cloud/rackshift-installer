@@ -6,6 +6,8 @@ PROJECT_DIR=$(dirname ${BASE_DIR})
 # shellcheck source=./util.sh
 . "${BASE_DIR}/utils.sh"
 
+conf_dir=$(dirname ${CONFIG_DIR})
+
 function set_volume_dir() {
   echo_yellow "1. $(gettext 'Configure Persistent Directory')"
   volume_dir=$(get_config VOLUME_DIR)
@@ -63,9 +65,9 @@ function set_external_mysql() {
   set_config DB_NAME ${mysql_db}
   set_config USE_EXTERNAL_MYSQL 1
 
-  sed -i "s@jdbc:mysql://mysql:3306@jdbc:mysql://${mysql_host}:${mysql_port}@g" ${config_dir}/rackshift.properties
-  sed -i "s@spring.datasource.username=@spring.datasource.username=${mysql_user}@g" ${config_dir}/rackshift.properties
-  sed -i "s@spring.datasource.password=@spring.datasource.password=${mysql_pass}@g" ${config_dir}/rackshift.properties
+  sed -i "s@jdbc:mysql://mysql:3306@jdbc:mysql://${mysql_host}:${mysql_port}@g" ${conf_dir}/conf/rackshift.properties
+  sed -i "s@spring.datasource.username=@spring.datasource.username=${mysql_user}@g" ${conf_dir}/conf/rackshift.properties
+  sed -i "s@spring.datasource.password=@spring.datasource.password=${mysql_pass}@g" ${conf_dir}/conf/rackshift.properties
 }
 
 function set_internal_mysql() {
@@ -74,10 +76,9 @@ function set_internal_mysql() {
   if [[ -z "${password}" ]]; then
     DB_PASSWORD=$(random_str 26)
     set_config DB_PASSWORD ${DB_PASSWORD}
-    set_config MYSQL_ROOT_PASSWORD ${DB_PASSWORD}
-    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${DB_PASSWORD}@g" ${config_dir}/rackshift.properties
+    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${DB_PASSWORD}@g" ${conf_dir}/conf/rackshift.properties
   else
-    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${password}@g" ${config_dir}/rackshift.properties
+    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${password}@g" ${conf_dir}/conf/rackshift.properties
   fi
 }
 
@@ -107,8 +108,8 @@ function set_server_ip() {
   confirm="y"
   read_from_input confirm "$(gettext 'Use IP address') ${rackshift_ip}?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
-    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${config_dir}/mysql/rackshift.sql
-    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${config_dir}/rackhd/monorail/config.json
+    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${CONFIG_DIR}/mysql/rackshift.sql
+    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${CONFIG_DIR}/rackhd/monorail/config.json
   else
     set_server_ip
   fi
