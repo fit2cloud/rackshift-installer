@@ -12,7 +12,7 @@ deny duplicates;
 option domain-name-servers 172.31.128.250;
 option routers 172.31.128.254;
 
-subnet 172.31.128.0 netmask 255.255.240.0 {
-  range 172.31.128.2 172.31.143.254;
+subnet ipsegment netmask netmask0 {
+  range startip endip;
   option vendor-class-identifier "PXEClient";
 }
