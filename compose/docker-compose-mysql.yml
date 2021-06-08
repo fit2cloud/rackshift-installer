@@ -8,7 +8,6 @@ services:
 
   mysql:
     image: x-lab/mysql:5.7.31
-    container_name: rs_mysql
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:

@@ -3,30 +3,26 @@
 version: '2.4'
 services:
   mongo: # 27017
-    image: x-lab/mongo:latest
-    container_name: rs_mongo
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/mongo:latest
     network_mode: host
     privileged: true
 
   rabbitmq: # 5672, 15672
-    image: x-lab/rabbitmq:management
-    container_name: rs_rabbitmq
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rabbitmq:management
     network_mode: host
     privileged: true
 
   dhcp: # 67/udp
-    image: x-lab/isc-dhcp-server:latest
-    container_name: rs_dhcp-server
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/isc-dhcp-server:latest
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/dhcp:/var/lib/dhcp
-      - ${CONFIG_DIR}/rackhd/dhcp/config:/etc/dhcp
-      - ${CONFIG_DIR}/rackhd/dhcp/defaults:/etc/defaults
+      - ${VOLUME_DIR}/rackhd/dhcp/config:/etc/dhcp
+      - ${VOLUME_DIR}/rackhd/dhcp/defaults:/etc/defaults
 
   files:
-    image: x-lab/rackshift-files:v1.0.0
-    container_name: rs_files
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-files:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -39,37 +35,34 @@ services:
       - dhcp
       - mongo
       - rabbitmq
-    image: x-lab/on-dhcp-proxy:v1.0.0
-    container_name: rs_dhcp-proxy
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-dhcp-proxy:v1.0.0
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/dhcp:/var/lib/dhcp
-      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
   http: # 9090, 9080
     depends_on:
       - files
       - mongo
       - rabbitmq
-    image: x-lab/on-http:v1.0.0
-    container_name: rs_http
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-http:v1.0.0
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/files/mount/common:/RackHD/on-http/static/http/common
-      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
   syslog: # 514/udp
     depends_on:
       - mongo
       - rabbitmq
-    image: x-lab/on-syslog:v1.0.0
-    container_name: rs_syslog
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-syslog:v1.0.0
     network_mode: host
     privileged: true
     volumes:
-      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
   taskgraph:
     depends_on:
@@ -77,12 +70,11 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: x-lab/rackshift-taskgraph:v1.0.0
-    container_name: rs_task
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.0.0
     network_mode: host
     privileged: true
     volumes:
-      - ${CONFIG_DIR}/rackhd/monorail:/opt/monorail
+      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
   tftp: # 69/udp
     depends_on:
@@ -90,19 +82,17 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: x-lab/on-tftp:v1.0.0
-    container_name: rs_tftp
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-tftp:v1.0.0
     network_mode: host
     privileged: true
     volumes:
-      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
       - ${VOLUME_DIR}/rackhd/files/mount:/RackHD/on-tftp/static/tftp
+      - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
   # RackHD services
 
   rackshift: # 8082
-    image: x-lab/rackshift:${VERSION}
-    container_name: rs_core
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:${VERSION}
     privileged: true
     pid: host
     ports:
@@ -115,27 +105,22 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-proxy: # 8083
-    image: x-lab/rackshift-proxy:v1.0.0
-    container_name: rs_proxy
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
     privileged: true
     ports:
       - 8083:8083
     volumes:
-      - ${CONFIG_DIR}/rackhd/dhcp/config/dhcpd.conf:/opt/rackshift/rackhd/dhcp/config/dhcpd.conf
       - ${VOLUME_DIR}:/opt/rackshift
       - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
-    image: x-lab/rackshift-plugins:v1.0.0
-    container_name: rs_plugins
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.0.0
     volumes:
       - ${VOLUME_DIR}/plugins:/plugins
 
   ipmitool:
-    image: x-lab/ipmitool:latest
-    container_name: rs_ipmitool
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool:latest
 
   racadm:
-    image: x-lab/racadm-docker:latest
-    container_name: rs_racadm
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker:latest

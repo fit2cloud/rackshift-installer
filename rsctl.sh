@@ -180,9 +180,6 @@ function main() {
         docker logs -f "${docker_name}" --tail 100
       fi
       ;;
-    show_services)
-      get_docker_compose_services
-      ;;
     raw)
       ${EXE} "${args[@]:1}"
       ;;

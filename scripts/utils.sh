@@ -187,21 +187,10 @@ function log_error() {
   echo_red "[ERROR] $1"
 }
 
-function get_docker_compose_services() {
-  ignore_db="$1"
-  services="mongo rabbitmq dhcp-server files dhcp-proxy http syslog task tftp core proxy plugins ipmitool racadm"
-  use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
-  if [[ "${use_external_mysql}" != "1" && "${ignore_db}" != "ignore_db" ]]; then
-    services+=" mysql"
-  fi
-  echo "${services}"
-}
-
 function get_docker_compose_cmd_line() {
   ignore_db="$1"
   cmd="docker-compose -f ./compose/docker-compose-app.yml "
-  services=$(get_docker_compose_services "$ignore_db")
-  if [[ "${services}" =~ mysql ]]; then
+  if [[ "${use_external_mysql}" != "1" && "${ignore_db}" != "ignore_db" ]]; then
     cmd="${cmd} -f ./compose/docker-compose-mysql.yml"
   fi
   echo "${cmd}"
@@ -298,7 +287,6 @@ function prepare_config() {
   cwd=$(pwd)
   cd "${PROJECT_DIR}" || exit 1
 
-  conf_dir=$(dirname ${CONFIG_DIR})
   echo_yellow "1. $(gettext 'Check Configuration File')"
   echo "$(gettext 'Path to Configuration file'): ${CONFIG_DIR}"
   if [[ ! -d "${CONFIG_DIR}" ]]; then
@@ -316,9 +304,6 @@ function prepare_config() {
   if [[ ! -f "./compose/.env" ]]; then
     ln -s "${CONFIG_FILE}" ./compose/.env
   fi
-  if [[ ! -d "${CONFIG_DIR}/rackshift" ]]; then
-    cp -R config_init/rackhd ${CONFIG_DIR}
-  fi
   if [[ ! -d "${CONFIG_DIR}/mysql" ]]; then
     cp -R config_init/mysql ${CONFIG_DIR}
   fi
@@ -329,23 +314,6 @@ function prepare_config() {
       echo -e "${CONFIG_DIR}/mysql/${file}  [\033[32m √ \033[0m]"
     fi
   done
-  if [[ ! -f "${CONFIG_DIR}/rackhd/monorail/config.json" ]]; then
-    cp config_init/rackhd/monorail/config.json.bak ${CONFIG_DIR}/rackhd/monorail/config.json
-  else
-    echo -e "${CONFIG_DIR}/rackhd/monorail/config.json  [\033[32m √ \033[0m]"
-  fi
-  if [[ ! -d "${conf_dir}/conf" ]]; then
-    mkdir -p ${conf_dir}/conf
-    cp config_init/conf/rackshift.properties ${conf_dir}/conf/
-  fi
-  if [[ ! -f "${conf_dir}/conf/rackshift.properties" ]]; then
-    cp config_init/conf/rackshift.properties ${conf_dir}/conf/
-  else
-    echo -e "${conf_dir}/conf/rackshift.properties  [\033[32m √ \033[0m]"
-  fi
-  if [ -d plugins ]; then
-    \cp -rf ../plugins/* ${CONFIG_DIR}
-  fi
   echo_done
 
   backup_dir="${CONFIG_DIR}/backup"
@@ -394,6 +362,6 @@ function upgrade_config() {
   cwd=$(pwd)
   cd "${PROJECT_DIR}" || exit
 
-  config_dir=$(dirname "${CONFIG_FILE}")
-  cp -rf config_init/rackhd/conf/version ${config_dir}/rackhd/conf/version
+  volume_dir=$(get_config VOLUME_DIR)
+  cp -rf config_init/rackhd/conf/version ${volume_dir}/rackhd/conf/version
 }

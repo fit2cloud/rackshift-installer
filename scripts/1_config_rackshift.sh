@@ -6,8 +6,6 @@ PROJECT_DIR=$(dirname ${BASE_DIR})
 # shellcheck source=./util.sh
 . "${BASE_DIR}/utils.sh"
 
-conf_dir=$(dirname ${CONFIG_DIR})
-
 function set_volume_dir() {
   echo_yellow "1. $(gettext 'Configure Persistent Directory')"
   volume_dir=$(get_config VOLUME_DIR)
@@ -27,8 +25,23 @@ function set_volume_dir() {
   fi
   if [[ ! -d "${volume_dir}" ]]; then
     mkdir -p ${volume_dir}
+    cp -R "${PROJECT_DIR}/config_init/conf" ${volume_dir}
+    cp -rpf "${PROJECT_DIR}/config_init/rackhd" ${volume_dir}
+    cp config_init/rackhd/monorail/config.json.bak ${volume_dir}/rackhd/monorail/config.json
   fi
   set_config VOLUME_DIR ${volume_dir}
+  if [[ ! -d "${volume_dir}/conf" ]]; then
+    cp -R "${PROJECT_DIR}/config_init/conf" ${volume_dir}
+  fi
+  if [[ ! -d "${volume_dir}/rackhd" ]]; then
+    cp -R "${PROJECT_DIR}/config_init/rackhd" ${volume_dir}
+  fi
+  if [[ ! -f "${volume_dir}/rackhd/monorail/config.json" ]]; then
+    cp config_init/rackhd/monorail/config.json.bak ${volume_dir}/rackhd/monorail/config.json
+  fi
+  if [[ -d "${PROJECT_DIR}/config_init/plugins" ]]; then
+    \cp -rf ${PROJECT_DIR}/config_init/plugins ${volume_dir}
+  fi
   echo_done
 }
 
@@ -65,9 +78,10 @@ function set_external_mysql() {
   set_config DB_NAME ${mysql_db}
   set_config USE_EXTERNAL_MYSQL 1
 
-  sed -i "s@jdbc:mysql://mysql:3306@jdbc:mysql://${mysql_host}:${mysql_port}@g" ${conf_dir}/conf/rackshift.properties
-  sed -i "s@spring.datasource.username=@spring.datasource.username=${mysql_user}@g" ${conf_dir}/conf/rackshift.properties
-  sed -i "s@spring.datasource.password=@spring.datasource.password=${mysql_pass}@g" ${conf_dir}/conf/rackshift.properties
+  volume_dir=$(get_config VOLUME_DIR)
+  sed -i "s@jdbc:mysql://mysql:3306@jdbc:mysql://${mysql_host}:${mysql_port}@g" ${volume_dir}/conf/rackshift.properties
+  sed -i "s@spring.datasource.username=@spring.datasource.username=${mysql_user}@g" ${volume_dir}/conf/rackshift.properties
+  sed -i "s@spring.datasource.password=@spring.datasource.password=${mysql_pass}@g" ${volume_dir}/conf/rackshift.properties
 }
 
 function set_internal_mysql() {
@@ -76,9 +90,10 @@ function set_internal_mysql() {
   if [[ -z "${password}" ]]; then
     DB_PASSWORD=$(random_str 26)
     set_config DB_PASSWORD ${DB_PASSWORD}
-    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${DB_PASSWORD}@g" ${conf_dir}/conf/rackshift.properties
+    volume_dir=$(get_config VOLUME_DIR)
+    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${DB_PASSWORD}@g" ${volume_dir}/conf/rackshift.properties
   else
-    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${password}@g" ${conf_dir}/conf/rackshift.properties
+    sed -i "s@spring.datasource.password=.*@spring.datasource.password=${password}@g" ${volume_dir}/conf/rackshift.properties
   fi
 }
 
@@ -109,7 +124,8 @@ function set_server_ip() {
   read_from_input confirm "$(gettext 'Use IP address') ${rackshift_ip}?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
     sed -i "s/172.31.128.1/${rackshift_ip}/g" ${CONFIG_DIR}/mysql/rackshift.sql
-    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${CONFIG_DIR}/rackhd/monorail/config.json
+    volume_dir=$(get_config VOLUME_DIR)
+    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${volume_dir}/rackhd/monorail/config.json
   else
     set_server_ip
   fi

@@ -50,8 +50,6 @@ function pull_image() {
     if [[ ! "$(docker images | grep $(echo ${image%:*}) | grep $(echo ${image#*:}))" ]]; then
       if [[ -n "${DOCKER_IMAGE_PREFIX}" && $(image_has_prefix "${image}") == "0" ]]; then
         docker pull "${DOCKER_IMAGE_PREFIX}/${image}"
-        docker tag "${DOCKER_IMAGE_PREFIX}/${image}" "${image}"
-        docker rmi -f "${DOCKER_IMAGE_PREFIX}/${image}"
       else
         log_error "$(gettext 'Not set') DOCKER_IMAGE_PREFIX"
         exit 1
