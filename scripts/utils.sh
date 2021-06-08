@@ -20,8 +20,12 @@ function random_str() {
     len=16
   fi
   command -v dmidecode &>/dev/null
+  uuid=None
   if [[ "$?" == "0" ]]; then
-    dmidecode -t 1 | grep UUID | awk '{print $2}' | base64 | head -c ${len}; echo
+    uuid=$(dmidecode -t 1 | grep UUID | awk '{print $2}' | base64 | head -c ${len})
+  fi
+  if [[ "$(echo $uuid | wc -L)" == "${len}" ]]; then
+    echo ${uuid}
   else
     cat /dev/urandom | tr -dc A-Za-z0-9 | head -c ${len}; echo
   fi
@@ -147,15 +151,6 @@ function check_md5() {
     echo "1"
   else
     echo "0"
-  fi
-}
-
-function is_running() {
-  ps axu | grep -v grep | grep $1 &>/dev/null
-  if [[ "$?" == "0" ]]; then
-    echo 0
-  else
-    echo 1
   fi
 }
 
@@ -340,4 +335,13 @@ function image_has_prefix() {
   else
     echo "0"
   fi
+}
+
+function upgrade_config() {
+  # 如果配置文件有更新, 则添加到新的配置文件
+  cwd=$(pwd)
+  cd "${PROJECT_DIR}" || exit
+
+  config_dir=$(dirname "${CONFIG_FILE}")
+  cp -rf config_init/rackhd/conf/version ${config_dir}/rackhd/conf/version
 }

@@ -21,7 +21,3 @@ DB_NAME=rackshift
 
 ## Nginx 配置
 HTTP_PORT=80
-
-# 使用内置 MySQL 容器
-MYSQL_ROOT_PASSWORD=
-MYSQL_DATABASE=jumpserver

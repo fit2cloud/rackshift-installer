@@ -7,20 +7,8 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 target=$1
 
-function update_proc_if_need() {
-  if [[ ! -f ./docker/dockerd ]]; then
-    confirm="n"
-    read_from_input confirm "$(gettext 'Do you need to update') Docker?" "y/n" "${confirm}"
-    if [[ "${confirm}" == "y" ]]; then
-      install_docker
-      install_compose
-    fi
-    echo_done
-  else
-    # 针对离线包不做判断，直接更新
-    install_docker
-    install_compose
-  fi
+function update_config_if_need() {
+  upgrade_config
 }
 
 function backup_db() {
@@ -53,17 +41,16 @@ function main() {
     sed -i "s@VERSION=.*@VERSION=${to_version}@g" "${PROJECT_DIR}/static.env"
     export VERSION=${to_version}
   fi
+  echo
+  update_config_if_need && echo_done || (echo_failed; exit  1)
 
-  echo_yellow "\n1. $(gettext 'Check program file changes')"
-  update_proc_if_need || (echo_failed; exit  4)
+  echo_yellow "\n1. $(gettext 'Upgrade Docker image')"
+  bash "${SCRIPT_DIR}/3_load_images.sh" && echo_done || (echo_failed; exit  1)
 
-  echo_yellow "\n2. $(gettext 'Upgrade Docker image')"
-  bash "${SCRIPT_DIR}/3_load_images.sh" && echo_done || (echo_failed; exit  5)
+  echo_yellow "\n2. $(gettext 'Backup database')"
+  backup_db || exit 1
 
-  echo_yellow "\n3. $(gettext 'Backup database')"
-  backup_db || exit 2
-
-  echo_yellow "\n4. $(gettext 'Upgrade successfully. You can now restart the program')"
+  echo_yellow "\n3. $(gettext 'Upgrade successfully. You can now restart the program')"
   echo "./rsctl.sh restart"
   echo -e "\n\n"
 }
