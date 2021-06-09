@@ -7,7 +7,8 @@ services:
         condition: service_healthy
 
   mysql:
-    image: x-lab/mysql:5.7.31
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31
+    container_name: rs_mysql
     restart: always
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -17,9 +18,9 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ${CONFIG_DIR}/mysql/mysql.cnf:/etc/mysql/my.cnf
-      - ${CONFIG_DIR}/mysql/rackshift.sql:/docker-entrypoint-initdb.d/rackshift.sql
-      - ${VOLUME_DIR}/mysql/data:/var/lib/mysql
+      - ${VOLUME_DIR}/conf/mysql:/etc/mysql
+      - ${VOLUME_DIR}/data/mysql:/var/lib/mysql
+      - ${VOLUME_DIR}/conf/mysql/sql:/docker-entrypoint-initdb.d
     healthcheck:
       test: "mysql -uroot -h127.0.0.1 -p$$MYSQL_ROOT_PASSWORD -e 'SHOW DATABASES;'"
       interval: 10s

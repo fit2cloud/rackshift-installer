@@ -1,19 +1,21 @@
-# Copyright 2016, EMC, Inc.
-
 version: '2.4'
+
 services:
-  mongo: # 27017
+  mongo:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/mongo:latest
+    container_name: rs_mongo
     network_mode: host
     privileged: true
 
-  rabbitmq: # 5672, 15672
+  rabbitmq:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rabbitmq:management
+    container_name: rs_rabbitmq
     network_mode: host
     privileged: true
 
-  dhcp: # 67/udp
+  dhcp:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/isc-dhcp-server:latest
+    container_name: rs_dhcp
     network_mode: host
     privileged: true
     volumes:
@@ -23,42 +25,44 @@ services:
 
   files:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-files:v1.0.0
+    container_name: rs_files
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/files/mount:/files
 
-  # RackHD services
-
-  dhcp-proxy: # 68/udp, 4011
+  dhcp-proxy:
     depends_on:
       - dhcp
       - mongo
       - rabbitmq
     image: registry.cn-qingdao.aliyuncs.com/x-lab/on-dhcp-proxy:v1.0.0
+    container_name: rs_dhcp-proxy
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/dhcp:/var/lib/dhcp
       - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
-  http: # 9090, 9080
+  http:
     depends_on:
       - files
       - mongo
       - rabbitmq
     image: registry.cn-qingdao.aliyuncs.com/x-lab/on-http:v1.0.0
+    container_name: rs_http
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/files/mount/common:/RackHD/on-http/static/http/common
       - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
-  syslog: # 514/udp
+  syslog:
     depends_on:
       - mongo
       - rabbitmq
     image: registry.cn-qingdao.aliyuncs.com/x-lab/on-syslog:v1.0.0
+    container_name: rs_syslog
     network_mode: host
     privileged: true
     volumes:
@@ -71,28 +75,29 @@ services:
       - rabbitmq
       - syslog
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.0.0
+    container_name: rs_taskgraph
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
-  tftp: # 69/udp
+  tftp:
     depends_on:
       - files
       - mongo
       - rabbitmq
       - syslog
     image: registry.cn-qingdao.aliyuncs.com/x-lab/on-tftp:v1.0.0
+    container_name: rs_tftp
     network_mode: host
     privileged: true
     volumes:
       - ${VOLUME_DIR}/rackhd/files/mount:/RackHD/on-tftp/static/tftp
       - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
-  # RackHD services
-
-  rackshift: # 8082
+  rackshift:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:${VERSION}
+    container_name: rs_core
     privileged: true
     pid: host
     ports:
@@ -104,8 +109,9 @@ services:
       - ${VOLUME_DIR}/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
-  rackshift-proxy: # 8083
+  rackshift-proxy:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
+    container_name: rs_proxy
     privileged: true
     ports:
       - 8083:8083
@@ -116,11 +122,14 @@ services:
 
   rackshift-plugins:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.0.0
+    container_name: rs_plugins
     volumes:
       - ${VOLUME_DIR}/plugins:/plugins
 
   ipmitool:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool:latest
+    container_name: rs_ipmitool
 
   racadm:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker:latest
+    container_name: rs_racadm

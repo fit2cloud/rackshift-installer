@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-25 13:40+0800\n"
+"POT-Creation-Date: 2021-06-09 12:12+0800\n"
 "Language-Team: Language locale/zh\n"
 "Language: locale/zh_CN/LC_MESSAGES/rackshift-installer\n"
 "MIME-Version: 1.0\n"
@@ -57,88 +57,76 @@ msgstr ""
 msgid "Preparing image offline package"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:11
-msgid "Please enter MySQL server IP"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:14
-msgid "Please enter MySQL server port"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:17
-msgid "Please enter MySQL database name"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:20
-msgid "Please enter MySQL username"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:23
-msgid "Please enter MySQL password"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:27
-msgid "Failed to connect to database, please reset"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:58
-msgid "Configure MySQL"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:64
-msgid "Do you want to use external MySQL"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:75
+#: scripts/1_config_rackshift.sh:10
 msgid "Configure Persistent Directory"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:81
+#: scripts/1_config_rackshift.sh:16
 msgid "Do you need custom persistent store, will use the default directory"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:84
+#: scripts/1_config_rackshift.sh:19
 msgid ""
 "To modify the persistent directory such as logs video, you can select your "
 "largest disk and create a directory in it, such as"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:85
+#: scripts/1_config_rackshift.sh:20
 msgid ""
 "Note: you can not change it after installation, otherwise the database may "
 "be lost"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:89
+#: scripts/1_config_rackshift.sh:24
 msgid "Persistent storage directory"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:99
+#: scripts/1_config_rackshift.sh:59
+msgid "Please enter MySQL server IP"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:65
+msgid "Please enter MySQL server port"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:68
+msgid "Please enter MySQL database name"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:71
+msgid "Please enter MySQL username"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:74
+msgid "Please enter MySQL password"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:78
+msgid "Failed to connect to database, please reset"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:110
+msgid "Configure MySQL"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:116
+msgid "Do you want to use external MySQL"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:127
 msgid "Set Service IP"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:102
+#: scripts/1_config_rackshift.sh:130
 msgid "Please enter the server IP (PXE network) address to use as rackshift"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:105
+#: scripts/1_config_rackshift.sh:133
 msgid "Use IP address"
 msgstr ""
 
-#: scripts/1_config_rackshift.sh:121
-msgid "Check Configuration File"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:122
-msgid "Path to Configuration file"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:168
-msgid "Backup Configuration File"
-msgstr ""
-
-#: scripts/1_config_rackshift.sh:170
-msgid "Back up to"
+#: scripts/1_config_rackshift.sh:148
+msgid "Init External MySQL"
 msgstr ""
 
 #: scripts/2_install_docker.sh:32
@@ -169,25 +157,19 @@ msgstr ""
 msgid "Docker image storage directory"
 msgstr ""
 
-#: scripts/2_install_docker.sh:176
-msgid ""
-"Docker version has changed or Docker configuration file has been changed, do "
-"you want to restart"
-msgstr ""
-
-#: scripts/2_install_docker.sh:204
+#: scripts/2_install_docker.sh:195
 msgid "Skip docker installation on macOS"
 msgstr ""
 
-#: scripts/2_install_docker.sh:207
+#: scripts/2_install_docker.sh:198
 msgid "Install Docker"
 msgstr ""
 
-#: scripts/2_install_docker.sh:210
+#: scripts/2_install_docker.sh:201
 msgid "Configure Docker"
 msgstr ""
 
-#: scripts/2_install_docker.sh:212
+#: scripts/2_install_docker.sh:203
 msgid "Start Docker"
 msgstr ""
 
@@ -199,7 +181,7 @@ msgstr ""
 msgid "Docker image loaded, skipping"
 msgstr ""
 
-#: scripts/3_load_images.sh:56
+#: scripts/3_load_images.sh:54
 msgid "Not set"
 msgstr ""
 
@@ -243,85 +225,77 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: scripts/4_install_rackshift.sh:65
+#: scripts/4_install_rackshift.sh:66
 msgid "Install and Configure Docker"
 msgstr ""
 
-#: scripts/4_install_rackshift.sh:67
+#: scripts/4_install_rackshift.sh:68
 msgid "Loading Docker Image"
 msgstr ""
 
-#: scripts/4_install_rackshift.sh:69
+#: scripts/4_install_rackshift.sh:70
 msgid "Install and Configure RackShift"
 msgstr ""
 
-#: scripts/5_db_backup.sh:17
+#: scripts/5_db_backup.sh:18
 msgid "Backing up"
 msgstr ""
 
-#: scripts/5_db_backup.sh:23
+#: scripts/5_db_backup.sh:24
 msgid "Backup failed"
 msgstr ""
 
-#: scripts/5_db_backup.sh:27
+#: scripts/5_db_backup.sh:28
 msgid "Backup succeeded! The backup file has been saved to"
 msgstr ""
 
-#: scripts/6_db_restore.sh:19
+#: scripts/6_db_restore.sh:20
 msgid "Start restoring database"
 msgstr ""
 
-#: scripts/6_db_restore.sh:23
+#: scripts/6_db_restore.sh:24
 msgid "file does not exist"
 msgstr ""
 
-#: scripts/6_db_restore.sh:34
+#: scripts/6_db_restore.sh:35
 msgid ""
 "Database recovery failed. Please check whether the database file is complete "
 "or try to recover manually"
 msgstr ""
 
-#: scripts/6_db_restore.sh:37
+#: scripts/6_db_restore.sh:38
 msgid "Database recovered successfully"
 msgstr ""
 
-#: scripts/6_db_restore.sh:43
+#: scripts/6_db_restore.sh:44
 msgid "Format error"
 msgstr ""
 
-#: scripts/6_db_restore.sh:47
+#: scripts/6_db_restore.sh:48
 msgid "The backup file does not exist"
 msgstr ""
 
-#: scripts/7_upgrade.sh:13
-msgid "Do you need to update"
-msgstr ""
-
-#: scripts/7_upgrade.sh:30
+#: scripts/7_upgrade.sh:19
 msgid "Failed to backup the database. Continue to upgrade"
 msgstr ""
 
-#: scripts/7_upgrade.sh:36
+#: scripts/7_upgrade.sh:25
 msgid "Skip database backup"
 msgstr ""
 
-#: scripts/7_upgrade.sh:47
+#: scripts/7_upgrade.sh:36
 msgid "Are you sure you want to update the current version to"
 msgstr ""
 
-#: scripts/7_upgrade.sh:57
-msgid "Check program file changes"
-msgstr ""
-
-#: scripts/7_upgrade.sh:60
+#: scripts/7_upgrade.sh:48
 msgid "Upgrade Docker image"
 msgstr ""
 
-#: scripts/7_upgrade.sh:63 rsctl.sh:48
+#: scripts/7_upgrade.sh:51 rsctl.sh:48
 msgid "Backup database"
 msgstr ""
 
-#: scripts/7_upgrade.sh:66
+#: scripts/7_upgrade.sh:54
 msgid "Upgrade successfully. You can now restart the program"
 msgstr ""
 
@@ -349,24 +323,40 @@ msgstr ""
 msgid "Uninstall RackShift"
 msgstr ""
 
-#: scripts/utils.sh:118
+#: scripts/utils.sh:121
 msgid "no default"
 msgstr ""
 
-#: scripts/utils.sh:120
+#: scripts/utils.sh:123
 msgid "default"
 msgstr ""
 
-#: scripts/utils.sh:177
+#: scripts/utils.sh:171
 msgid "complete"
 msgstr ""
 
-#: scripts/utils.sh:181
+#: scripts/utils.sh:175
 msgid "fail"
 msgstr ""
 
-#: scripts/utils.sh:234 rsctl.sh:14
+#: scripts/utils.sh:217 rsctl.sh:14
 msgid "Please install it first"
+msgstr ""
+
+#: scripts/utils.sh:290
+msgid "Check Configuration File"
+msgstr ""
+
+#: scripts/utils.sh:291
+msgid "Path to Configuration file"
+msgstr ""
+
+#: scripts/utils.sh:315
+msgid "Backup Configuration File"
+msgstr ""
+
+#: scripts/utils.sh:317
+msgid "Back up to"
 msgstr ""
 
 #: rsctl.sh:13
@@ -429,10 +419,10 @@ msgstr ""
 msgid "The current version is"
 msgstr ""
 
-#: rsctl.sh:131
+#: rsctl.sh:130
 msgid "Reconfig successfully. You can now restart the program"
 msgstr ""
 
-#: rsctl.sh:135
+#: rsctl.sh:134
 msgid "Reset failed, please try again or check whether the database is normal"
 msgstr ""

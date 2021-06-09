@@ -12,6 +12,7 @@ function update_config_if_need() {
 }
 
 function backup_db() {
+  docker_network_check
   if [[ "${SKIP_BACKUP_DB}" != "1" ]]; then
     if ! bash "${SCRIPT_DIR}/5_db_backup.sh"; then
       confirm="n"

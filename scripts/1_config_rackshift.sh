@@ -33,6 +33,15 @@ function set_volume_dir() {
   if [[ ! -d "${volume_dir}/conf" ]]; then
     cp -R "${PROJECT_DIR}/config_init/conf" ${volume_dir}
   fi
+  if [[ ! -d "${volume_dir}/conf/mysql/sql" ]]; then
+    mkdir -p "${volume_dir}/conf/mysql/sql"
+  fi
+  if [[ ! -f "${volume_dir}/conf/mysql/mysql.cnf" ]]; then
+    cp "${PROJECT_DIR}/config_init/mysql/mysql.cnf" "${volume_dir}/conf/mysql"
+  fi
+  if [[ ! -f "${volume_dir}/conf/mysql/sql" ]]; then
+    cp "${PROJECT_DIR}/config_init/mysql/rackshift.sql" "${volume_dir}/conf/mysql/sql"
+  fi
   if [[ ! -d "${volume_dir}/rackhd" ]]; then
     cp -R "${PROJECT_DIR}/config_init/rackhd" ${volume_dir}
   fi
@@ -80,8 +89,8 @@ function set_external_mysql() {
 
   volume_dir=$(get_config VOLUME_DIR)
   sed -i "s@jdbc:mysql://mysql:3306@jdbc:mysql://${mysql_host}:${mysql_port}@g" ${volume_dir}/conf/rackshift.properties
-  sed -i "s@spring.datasource.username=@spring.datasource.username=${mysql_user}@g" ${volume_dir}/conf/rackshift.properties
-  sed -i "s@spring.datasource.password=@spring.datasource.password=${mysql_pass}@g" ${volume_dir}/conf/rackshift.properties
+  sed -i "s@spring.datasource.username=.*@spring.datasource.username=${mysql_user}@g" ${volume_dir}/conf/rackshift.properties
+  sed -i "s@spring.datasource.password=.*@spring.datasource.password=${mysql_pass}@g" ${volume_dir}/conf/rackshift.properties
 }
 
 function set_internal_mysql() {
@@ -123,8 +132,8 @@ function set_server_ip() {
   confirm="y"
   read_from_input confirm "$(gettext 'Use IP address') ${rackshift_ip}?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
-    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${CONFIG_DIR}/mysql/rackshift.sql
     volume_dir=$(get_config VOLUME_DIR)
+    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${volume_dir}/conf/mysql/sql/rackshift.sql
     sed -i "s/172.31.128.1/${rackshift_ip}/g" ${volume_dir}/rackhd/monorail/config.json
   else
     set_server_ip
@@ -133,10 +142,25 @@ function set_server_ip() {
   echo_done
 }
 
+function init_db() {
+  use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
+  if [[ "${use_external_mysql}" == "1" ]]; then
+    echo_yellow "\n4. $(gettext 'Init External MySQL')"
+    volume_dir=$(get_config VOLUME_DIR)
+    docker_network_check
+    bash "${BASE_DIR}/6_db_restore.sh" "${volume_dir}/conf/mysql/sql/rackshift.sql" || {
+      echo_failed
+      exit 1
+    }
+    echo_done
+  fi
+}
+
 function main() {
   set_volume_dir
   set_mysql
   set_server_ip
+  init_db
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then

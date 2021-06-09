@@ -79,7 +79,7 @@ function test_mysql_connect() {
   password=$4
   db=$5
   command="CREATE TABLE IF NOT EXISTS test(id INT); DROP TABLE test;"
-  docker run -it --rm x-lab/mysql:5.7.31 mysql -h${host} -P${port} -u${user} -p${password} ${db} -e "${command}" 2>/dev/null
+  docker run -it --rm registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31 mysql -h${host} -P${port} -u${user} -p${password} ${db} -e "${command}" 2>/dev/null
 }
 
 function get_images() {
@@ -304,16 +304,6 @@ function prepare_config() {
   if [[ ! -f "./compose/.env" ]]; then
     ln -s "${CONFIG_FILE}" ./compose/.env
   fi
-  if [[ ! -d "${CONFIG_DIR}/mysql" ]]; then
-    cp -R config_init/mysql ${CONFIG_DIR}
-  fi
-  for file in $(ls config_init/mysql); do
-    if [[ ! -f "${CONFIG_DIR}/mysql/${file}" ]]; then
-      cp config_init/mysql/${file} ${CONFIG_DIR}/mysql/
-    else
-      echo -e "${CONFIG_DIR}/mysql/${file}  [\033[32m √ \033[0m]"
-    fi
-  done
   echo_done
 
   backup_dir="${CONFIG_DIR}/backup"
@@ -354,6 +344,12 @@ function image_has_prefix() {
     echo "1"
   else
     echo "0"
+  fi
+}
+
+function docker_network_check() {
+  if [[ ! "$(docker network ls | grep rs_default)" ]]; then
+    docker network create rs_default
   fi
 }
 

@@ -16,6 +16,7 @@ DATABASE=$(get_config DB_NAME)
 DB_FILE="$1"
 
 function main() {
+  docker_network_check
   echo "$(gettext 'Start restoring database'): $DB_FILE"
   restore_cmd="mysql --host=${HOST} --port=${PORT} --user=${USER} --password=${PASSWORD} ${DATABASE}"
 
@@ -25,9 +26,9 @@ function main() {
   fi
 
   if [[ "${DB_FILE}" == *".gz" ]]; then
-    gunzip <${DB_FILE} | docker run --rm -i x-lab/mysql:5.7.31 ${restore_cmd}
+    gunzip <${DB_FILE} | docker run --rm -i --network=rs_default registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31 ${restore_cmd}
   else
-    docker run --rm -i x-lab/mysql:5.7.31 $restore_cmd <"${DB_FILE}"
+    docker run --rm -i --network=rs_default registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31 $restore_cmd <"${DB_FILE}"
   fi
   code="x$?"
   if [[ "$code" != "x0" ]]; then
