@@ -226,58 +226,58 @@ function prepare_online_install_required_pkg() {
 }
 
 function prepare_set_redhat_firewalld() {
-  if [[ -f "/etc/redhat-release" ]]; then
-    if [[ "$(firewall-cmd --state)" == "running" ]]; then
-      if [[ "$?" == "0" ]]; then
-        if [[ ! "$(firewall-cmd --list-ports | grep 80/tcp)" ]]; then
-          firewall-cmd --zone=public --add-port=80/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 8080/tcp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=8080/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 8083/tcp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=8083/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 8443/tcp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=8443/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 9080/tcp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=9080/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 9090/tcp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=9090/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 9030/tcp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=9030/tcp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 4011/udp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=4011/udp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 67/udp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=67/udp
-          flag=1
-        fi
-        if [[ ! "$(firewall-cmd --list-ports | grep 69/udp)" ]]; then
-          firewall-cmd --permanent --zone=public --add-port=69/udp
-          flag=1
-        fi
-        if [[ $flag ]]; then
-          firewall-cmd --reload
-        fi
+  if command -v firewall-cmd > /dev/null; then
+    firewall-cmd --state > /dev/null 2>&1
+    if [[ "$?" == "0" ]]; then
+      http_port=$(get_config HTTP_PORT)
+      if [[ ! "$(firewall-cmd --list-ports | grep ${http_port}/tcp)" ]]; then
+        firewall-cmd --zone=public --add-port=${http_port}/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 8080/tcp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=8080/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 8083/tcp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=8083/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 8443/tcp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=8443/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 9080/tcp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=9080/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 9090/tcp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=9090/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 9030/tcp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=9030/tcp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 4011/udp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=4011/udp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 67/udp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=67/udp
+        flag=1
+      fi
+      if [[ ! "$(firewall-cmd --list-ports | grep 69/udp)" ]]; then
+        firewall-cmd --permanent --zone=public --add-port=69/udp
+        flag=1
       fi
       if command -v dnf > /dev/null; then
         if [[ ! "$(firewall-cmd --list-all | grep 'masquerade: yes')" ]]; then
           firewall-cmd --permanent --add-masquerade
-          firewall-cmd --reload
+          flag=1
         fi
+      fi
+      if [[ "$flag" ]]; then
+        firewall-cmd --reload
       fi
     fi
   fi
