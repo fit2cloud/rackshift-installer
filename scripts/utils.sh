@@ -190,6 +190,7 @@ function log_error() {
 function get_docker_compose_cmd_line() {
   ignore_db="$1"
   cmd="docker-compose -f ./compose/docker-compose-app.yml "
+  use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
   if [[ "${use_external_mysql}" != "1" && "${ignore_db}" != "ignore_db" ]]; then
     cmd="${cmd} -f ./compose/docker-compose-mysql.yml"
   fi
