@@ -56,11 +56,10 @@ function main() {
     sed -i "s@VERSION=.*@VERSION=${to_version}@g" "${PROJECT_DIR}/static.env"
     export VERSION=${to_version}
   fi
-  echo
   update_config_if_need && echo_done || (echo_failed; exit  1)
 
   echo_yellow "\n1. $(gettext 'Upgrade Docker image')"
-  bash "${SCRIPT_DIR}/3_load_images.sh" && echo_done || (echo_failed; exit  1)
+  bash "${SCRIPT_DIR}/3_load_images.sh" || (echo_failed; exit  1)
 
   echo_yellow "\n2. $(gettext 'Backup database')"
   backup_db || exit 1
