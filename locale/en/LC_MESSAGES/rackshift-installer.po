@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-09 17:14+0800\n"
+"POT-Creation-Date: 2021-06-22 09:02+0800\n"
 "Language-Team: Language locale/zh\n"
 "Language: locale/en/LC_MESSAGES/rackshift-installer\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Configuration file not found"
 msgstr ""
 
-#: rsctl.sh:14 scripts/utils.sh:217
+#: rsctl.sh:14 scripts/utils.sh:218
 msgid "Please install it first"
 msgstr ""
 
@@ -65,7 +65,7 @@ msgstr ""
 msgid "Loading docker image"
 msgstr ""
 
-#: rsctl.sh:48 scripts/7_upgrade.sh:51
+#: rsctl.sh:48 scripts/7_upgrade.sh:60
 msgid "Backup database"
 msgstr ""
 
@@ -91,120 +91,6 @@ msgstr ""
 
 #: rsctl.sh:134
 msgid "Reset failed, please try again or check whether the database is normal"
-msgstr ""
-
-#: scripts/6_db_restore.sh:20
-msgid "Start restoring database"
-msgstr ""
-
-#: scripts/6_db_restore.sh:24
-msgid "file does not exist"
-msgstr ""
-
-#: scripts/6_db_restore.sh:35
-msgid ""
-"Database recovery failed. Please check whether the database file is complete "
-"or try to recover manually"
-msgstr ""
-
-#: scripts/6_db_restore.sh:38
-msgid "Database recovered successfully"
-msgstr ""
-
-#: scripts/6_db_restore.sh:44
-msgid "Format error"
-msgstr ""
-
-#: scripts/6_db_restore.sh:48
-msgid "The backup file does not exist"
-msgstr ""
-
-#: scripts/2_install_docker.sh:32
-msgid "Docker program does not exist"
-msgstr ""
-
-#: scripts/2_install_docker.sh:51
-msgid "There are updates available currently. Do you want to update"
-msgstr ""
-
-#: scripts/2_install_docker.sh:58
-msgid ""
-"Docker file copy failed. May be that docker service is already running. "
-"Please stop the running docker and re-execute it"
-msgstr ""
-
-#: scripts/2_install_docker.sh:125
-msgid "Do you need custom docker root dir, will use the default directory"
-msgstr ""
-
-#: scripts/2_install_docker.sh:129
-msgid ""
-"Modify the default storage directory of Docker image, you can select your "
-"largest disk and create a directory in it, such as"
-msgstr ""
-
-#: scripts/2_install_docker.sh:132
-msgid "Docker image storage directory"
-msgstr ""
-
-#: scripts/2_install_docker.sh:195
-msgid "Skip docker installation on macOS"
-msgstr ""
-
-#: scripts/2_install_docker.sh:198
-msgid "Install Docker"
-msgstr ""
-
-#: scripts/2_install_docker.sh:201
-msgid "Configure Docker"
-msgstr ""
-
-#: scripts/2_install_docker.sh:203
-msgid "Start Docker"
-msgstr ""
-
-#: scripts/7_upgrade.sh:19
-msgid "Failed to backup the database. Continue to upgrade"
-msgstr ""
-
-#: scripts/7_upgrade.sh:25
-msgid "Skip database backup"
-msgstr ""
-
-#: scripts/7_upgrade.sh:36
-msgid "Are you sure you want to update the current version to"
-msgstr ""
-
-#: scripts/7_upgrade.sh:48
-msgid "Upgrade Docker image"
-msgstr ""
-
-#: scripts/7_upgrade.sh:54
-msgid "Upgrade successfully. You can now restart the program"
-msgstr ""
-
-#: scripts/3_load_images.sh:21
-msgid "Docker image not found"
-msgstr ""
-
-#: scripts/3_load_images.sh:39
-msgid "Docker image loaded, skipping"
-msgstr ""
-
-#: scripts/3_load_images.sh:54
-msgid "Not set"
-msgstr ""
-
-#: scripts/5_db_backup.sh:18
-msgid "Backing up"
-msgstr ""
-
-#: scripts/5_db_backup.sh:24
-msgid "Backup failed"
-msgstr ""
-
-#: scripts/5_db_backup.sh:28
-msgid "Backup succeeded! The backup file has been saved to"
 msgstr ""
 
 #: scripts/0_prepare.sh:22
@@ -319,60 +205,76 @@ msgstr ""
 msgid "Use IP address"
 msgstr ""
 
+#: scripts/1_config_rackshift.sh:146
+msgid "Configure External Port"
+msgstr ""
+
 #: scripts/1_config_rackshift.sh:148
+msgid "Do you need to customize the RackShift external port"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:151
+msgid "RackShift web port"
+msgstr ""
+
+#: scripts/1_config_rackshift.sh:160
 msgid "Init External MySQL"
 msgstr ""
 
-#: scripts/utils.sh:121
-msgid "no default"
+#: scripts/2_install_docker.sh:32
+msgid "Docker program does not exist"
 msgstr ""
 
-#: scripts/utils.sh:123
-msgid "default"
+#: scripts/2_install_docker.sh:51
+msgid "There are updates available currently. Do you want to update"
 msgstr ""
 
-#: scripts/utils.sh:171
-msgid "complete"
+#: scripts/2_install_docker.sh:58
+msgid ""
+"Docker file copy failed. May be that docker service is already running. "
+"Please stop the running docker and re-execute it"
 msgstr ""
 
-#: scripts/utils.sh:175
-msgid "fail"
+#: scripts/2_install_docker.sh:125
+msgid "Do you need custom docker root dir, will use the default directory"
 msgstr ""
 
-#: scripts/utils.sh:290
-msgid "Check Configuration File"
+#: scripts/2_install_docker.sh:129
+msgid ""
+"Modify the default storage directory of Docker image, you can select your "
+"largest disk and create a directory in it, such as"
 msgstr ""
 
-#: scripts/utils.sh:291
-msgid "Path to Configuration file"
+#: scripts/2_install_docker.sh:132
+msgid "Docker image storage directory"
 msgstr ""
 
-#: scripts/utils.sh:315
-msgid "Backup Configuration File"
+#: scripts/2_install_docker.sh:195
+msgid "Skip docker installation on macOS"
 msgstr ""
 
-#: scripts/utils.sh:317
-msgid "Back up to"
+#: scripts/2_install_docker.sh:198
+msgid "Install Docker"
 msgstr ""
 
-#: scripts/8_uninstall.sh:8
-msgid "Make sure you have a backup of data, this operation is not reversible"
+#: scripts/2_install_docker.sh:201
+msgid "Configure Docker"
 msgstr ""
 
-#: scripts/8_uninstall.sh:11
-msgid "Are you clean up rackshift files"
+#: scripts/2_install_docker.sh:203
+msgid "Start Docker"
 msgstr ""
 
-#: scripts/8_uninstall.sh:18 scripts/8_uninstall.sh:20
-msgid "Cleaning up"
+#: scripts/3_load_images.sh:21
+msgid "Docker image not found"
 msgstr ""
 
-#: scripts/8_uninstall.sh:27
-msgid "Do you need to clean up the Docker image"
+#: scripts/3_load_images.sh:39
+msgid "Docker image loaded, skipping"
 msgstr ""
 
-#: scripts/8_uninstall.sh:34
-msgid "Cleanup complete"
+#: scripts/3_load_images.sh:54
+msgid "Not set"
 msgstr ""
 
 #: scripts/4_install_rackshift.sh:12
@@ -427,14 +329,124 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: scripts/4_install_rackshift.sh:76
+#: scripts/4_install_rackshift.sh:77
 msgid "Install and Configure Docker"
 msgstr ""
 
-#: scripts/4_install_rackshift.sh:78
+#: scripts/4_install_rackshift.sh:79
 msgid "Loading Docker Image"
 msgstr ""
 
-#: scripts/4_install_rackshift.sh:80
+#: scripts/4_install_rackshift.sh:81
 msgid "Install and Configure RackShift"
+msgstr ""
+
+#: scripts/5_db_backup.sh:18
+msgid "Backing up"
+msgstr ""
+
+#: scripts/5_db_backup.sh:24
+msgid "Backup failed"
+msgstr ""
+
+#: scripts/5_db_backup.sh:28
+msgid "Backup succeeded! The backup file has been saved to"
+msgstr ""
+
+#: scripts/6_db_restore.sh:20
+msgid "Start restoring database"
+msgstr ""
+
+#: scripts/6_db_restore.sh:24
+msgid "file does not exist"
+msgstr ""
+
+#: scripts/6_db_restore.sh:35
+msgid ""
+"Database recovery failed. Please check whether the database file is complete "
+"or try to recover manually"
+msgstr ""
+
+#: scripts/6_db_restore.sh:38
+msgid "Database recovered successfully"
+msgstr ""
+
+#: scripts/6_db_restore.sh:44
+msgid "Format error"
+msgstr ""
+
+#: scripts/6_db_restore.sh:48
+msgid "The backup file does not exist"
+msgstr ""
+
+#: scripts/7_upgrade.sh:28
+msgid "Failed to backup the database. Continue to upgrade"
+msgstr ""
+
+#: scripts/7_upgrade.sh:34
+msgid "Skip database backup"
+msgstr ""
+
+#: scripts/7_upgrade.sh:45
+msgid "Are you sure you want to update the current version to"
+msgstr ""
+
+#: scripts/7_upgrade.sh:57
+msgid "Upgrade Docker image"
+msgstr ""
+
+#: scripts/7_upgrade.sh:63
+msgid "Upgrade successfully. You can now restart the program"
+msgstr ""
+
+#: scripts/8_uninstall.sh:8
+msgid "Make sure you have a backup of data, this operation is not reversible"
+msgstr ""
+
+#: scripts/8_uninstall.sh:11
+msgid "Are you clean up rackshift files"
+msgstr ""
+
+#: scripts/8_uninstall.sh:18 scripts/8_uninstall.sh:20
+msgid "Cleaning up"
+msgstr ""
+
+#: scripts/8_uninstall.sh:27
+msgid "Do you need to clean up the Docker image"
+msgstr ""
+
+#: scripts/8_uninstall.sh:34
+msgid "Cleanup complete"
+msgstr ""
+
+#: scripts/utils.sh:121
+msgid "no default"
+msgstr ""
+
+#: scripts/utils.sh:123
+msgid "default"
+msgstr ""
+
+#: scripts/utils.sh:171
+msgid "complete"
+msgstr ""
+
+#: scripts/utils.sh:175
+msgid "fail"
+msgstr ""
+
+#: scripts/utils.sh:291
+msgid "Check Configuration File"
+msgstr ""
+
+#: scripts/utils.sh:292
+msgid "Path to Configuration file"
+msgstr ""
+
+#: scripts/utils.sh:316
+msgid "Backup Configuration File"
+msgstr ""
+
+#: scripts/utils.sh:318
+msgid "Back up to"
 msgstr ""

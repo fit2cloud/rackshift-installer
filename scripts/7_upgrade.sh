@@ -7,6 +7,20 @@ BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 target=$1
 
+function upgrade_config() {
+  # 如果配置文件有更新, 则添加到新的配置文件
+  cwd=$(pwd)
+  cd "${PROJECT_DIR}" || exit
+
+  volume_dir=$(get_config VOLUME_DIR)
+  cp -rf config_init/rackhd/conf/version ${volume_dir}/rackhd/conf/version
+
+  current_version=$(get_config CURRENT_VERSION)
+  if [ -z "${current_version}" ]; then
+    set_config CURRENT_VERSION "${VERSION}"
+  fi
+}
+
 function update_config_if_need() {
   upgrade_config
 }
@@ -54,6 +68,7 @@ function main() {
   echo_yellow "\n3. $(gettext 'Upgrade successfully. You can now restart the program')"
   echo "./rsctl.sh restart"
   echo -e "\n\n"
+  set_current_version
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then

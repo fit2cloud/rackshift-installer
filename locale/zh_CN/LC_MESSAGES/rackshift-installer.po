@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-09 17:13+0800\n"
+"POT-Creation-Date: 2021-06-22 09:02+0800\n"
 "Language-Team: Language locale/zh\n"
 "Language: locale/zh_CN/LC_MESSAGES/rackshift-installer\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Configuration file not found"
 msgstr "配置文件不存在"
 
-#: rsctl.sh:14 scripts/utils.sh:217
+#: rsctl.sh:14 scripts/utils.sh:218
 msgid "Please install it first"
 msgstr "请先安装"
 
@@ -65,7 +65,7 @@ msgstr "查看 RackShift 版本"
 msgid "Loading docker image"
 msgstr "加载 Docker 镜像"
 
-#: rsctl.sh:48 scripts/7_upgrade.sh:51
+#: rsctl.sh:48 scripts/7_upgrade.sh:60
 msgid "Backup database"
 msgstr "备份数据库"
 
@@ -92,120 +92,6 @@ msgstr "重置成功. 请重新启动程序"
 #: rsctl.sh:134
 msgid "Reset failed, please try again or check whether the database is normal"
 msgstr "重置失败, 请重试或者检查数据库是否正常"
-
-#: scripts/6_db_restore.sh:20
-msgid "Start restoring database"
-msgstr "开始还原数据库"
-
-#: scripts/6_db_restore.sh:24
-msgid "file does not exist"
-msgstr "文件不存在"
-
-#: scripts/6_db_restore.sh:35
-msgid ""
-"Database recovery failed. Please check whether the database file is complete "
-"or try to recover manually"
-msgstr "数据库恢复失败. 请检查数据库文件是否完整, 或尝试手动恢复"
-
-#: scripts/6_db_restore.sh:38
-msgid "Database recovered successfully"
-msgstr "数据库恢复成功"
-
-#: scripts/6_db_restore.sh:44
-msgid "Format error"
-msgstr "格式错误"
-
-#: scripts/6_db_restore.sh:48
-msgid "The backup file does not exist"
-msgstr "备份文件不存在"
-
-#: scripts/2_install_docker.sh:32
-msgid "Docker program does not exist"
-msgstr "Docker 程序不存在"
-
-#: scripts/2_install_docker.sh:51
-msgid "There are updates available currently. Do you want to update"
-msgstr "检测到 Docker 版本有更新, 是否更新"
-
-#: scripts/2_install_docker.sh:58
-msgid ""
-"Docker file copy failed. May be that docker service is already running. "
-"Please stop the running docker and re-execute it"
-msgstr "Docker 复制失败, 可能是已有 Docker 运行, 请停止运行的 Docker 重新执行"
-
-#: scripts/2_install_docker.sh:125
-msgid "Do you need custom docker root dir, will use the default directory"
-msgstr "是否需要 Docker 存储目录, 默认将使用目录"
-
-#: scripts/2_install_docker.sh:129
-msgid ""
-"Modify the default storage directory of Docker image, you can select your "
-"largest disk and create a directory in it, such as"
-msgstr "修改 Docker 默认的存储目录, 可以找个最大的磁盘, 并创建目录, 如"
-
-#: scripts/2_install_docker.sh:132
-msgid "Docker image storage directory"
-msgstr "Docker 镜像存储目录"
-
-#: scripts/2_install_docker.sh:195
-msgid "Skip docker installation on macOS"
-msgstr "macOS 跳过安装 Docker"
-
-#: scripts/2_install_docker.sh:198
-msgid "Install Docker"
-msgstr "安装 Docker"
-
-#: scripts/2_install_docker.sh:201
-msgid "Configure Docker"
-msgstr "配置 Docker"
-
-#: scripts/2_install_docker.sh:203
-msgid "Start Docker"
-msgstr "启动 Docker"
-
-#: scripts/7_upgrade.sh:19
-msgid "Failed to backup the database. Continue to upgrade"
-msgstr "备份数据库失败, 继续升级吗"
-
-#: scripts/7_upgrade.sh:25
-msgid "Skip database backup"
-msgstr "跳过备份数据库"
-
-#: scripts/7_upgrade.sh:36
-msgid "Are you sure you want to update the current version to"
-msgstr "是否将版本更新至"
-
-#: scripts/7_upgrade.sh:48
-msgid "Upgrade Docker image"
-msgstr "升级镜像文件"
-
-#: scripts/7_upgrade.sh:54
-msgid "Upgrade successfully. You can now restart the program"
-msgstr "升级成功, 可以重启程序了"
-
-#: scripts/3_load_images.sh:21
-msgid "Docker image not found"
-msgstr "镜像文件没有发现"
-
-#: scripts/3_load_images.sh:39
-msgid "Docker image loaded, skipping"
-msgstr "镜像已加载, 跳过"
-
-#: scripts/3_load_images.sh:54
-msgid "Not set"
-msgstr "未设置"
-
-#: scripts/5_db_backup.sh:18
-msgid "Backing up"
-msgstr "正在备份"
-
-#: scripts/5_db_backup.sh:24
-msgid "Backup failed"
-msgstr "备份失败"
-
-#: scripts/5_db_backup.sh:28
-msgid "Backup succeeded! The backup file has been saved to"
-msgstr "备份成功! 备份文件已存放至"
 
 #: scripts/0_prepare.sh:22
 msgid "Starting to download Docker engine"
@@ -237,7 +123,7 @@ msgstr "Docker 没有运行, 请安装并启动"
 
 #: scripts/0_prepare.sh:92
 msgid "Save image"
-msgstr ""
+msgstr "保存镜像"
 
 #: scripts/0_prepare.sh:95
 msgid "The image has been saved, skipping"
@@ -319,61 +205,77 @@ msgstr "请输入用作 RackShift 的服务器 IP（PXE 网卡） 地址"
 msgid "Use IP address"
 msgstr "是否使用 IP 地址"
 
+#: scripts/1_config_rackshift.sh:146
+msgid "Configure External Port"
+msgstr "配置对外端口"
+
 #: scripts/1_config_rackshift.sh:148
+msgid "Do you need to customize the RackShift external port"
+msgstr "是否需要配置 RackShift 对外访问端口"
+
+#: scripts/1_config_rackshift.sh:151
+msgid "RackShift web port"
+msgstr "RackShift web 端口"
+
+#: scripts/1_config_rackshift.sh:160
 msgid "Init External MySQL"
 msgstr "初始化外置数据库"
 
-#: scripts/utils.sh:121
-msgid "no default"
-msgstr "无默认值"
+#: scripts/2_install_docker.sh:32
+msgid "Docker program does not exist"
+msgstr "Docker 程序不存在"
 
-#: scripts/utils.sh:123
-msgid "default"
-msgstr "默认为"
+#: scripts/2_install_docker.sh:51
+msgid "There are updates available currently. Do you want to update"
+msgstr "检测到 Docker 版本有更新, 是否更新"
 
-#: scripts/utils.sh:171
-msgid "complete"
-msgstr "完成"
+#: scripts/2_install_docker.sh:58
+msgid ""
+"Docker file copy failed. May be that docker service is already running. "
+"Please stop the running docker and re-execute it"
+msgstr "Docker 复制失败, 可能是已有 Docker 运行, 请停止运行的 Docker 重新执行"
 
-#: scripts/utils.sh:175
-msgid "fail"
-msgstr "失败"
+#: scripts/2_install_docker.sh:125
+msgid "Do you need custom docker root dir, will use the default directory"
+msgstr "是否需要 Docker 存储目录, 默认将使用目录"
 
-#: scripts/utils.sh:290
-msgid "Check Configuration File"
-msgstr "检查配置文件"
+#: scripts/2_install_docker.sh:129
+msgid ""
+"Modify the default storage directory of Docker image, you can select your "
+"largest disk and create a directory in it, such as"
+msgstr "修改 Docker 默认的存储目录, 可以找个最大的磁盘, 并创建目录, 如"
 
-#: scripts/utils.sh:291
-msgid "Path to Configuration file"
-msgstr "配置文件位置"
+#: scripts/2_install_docker.sh:132
+msgid "Docker image storage directory"
+msgstr "Docker 镜像存储目录"
 
-#: scripts/utils.sh:315
-msgid "Backup Configuration File"
-msgstr "备份配置文件"
+#: scripts/2_install_docker.sh:195
+msgid "Skip docker installation on macOS"
+msgstr "macOS 跳过安装 Docker"
 
-#: scripts/utils.sh:317
-msgid "Back up to"
-msgstr "正在备份"
+#: scripts/2_install_docker.sh:198
+msgid "Install Docker"
+msgstr "安装 Docker"
 
-#: scripts/8_uninstall.sh:8
-msgid "Make sure you have a backup of data, this operation is not reversible"
-msgstr "请确认已经备份好相关数据, 此操作不可逆"
+#: scripts/2_install_docker.sh:201
+msgid "Configure Docker"
+msgstr "配置 Docker"
 
-#: scripts/8_uninstall.sh:11
-msgid "Are you clean up rackshift files"
-msgstr "确认清理 rackshift 相关文件"
+#: scripts/2_install_docker.sh:203
+msgid "Start Docker"
+msgstr "启动 Docker"
 
-#: scripts/8_uninstall.sh:18 scripts/8_uninstall.sh:20
-msgid "Cleaning up"
-msgstr "正在清理"
+#: scripts/3_load_images.sh:21
+msgid "Docker image not found"
+msgstr "镜像文件没有发现"
 
-#: scripts/8_uninstall.sh:27
-msgid "Do you need to clean up the Docker image"
-msgstr "是否清理 Docker 镜像"
+#: scripts/3_load_images.sh:39
+msgid "Docker image loaded, skipping"
+msgstr "镜像已加载, 跳过"
 
-#: scripts/8_uninstall.sh:34
-msgid "Cleanup complete"
-msgstr "清理完成"
+#: scripts/3_load_images.sh:54
+msgid "Not set"
+msgstr "未设置"
 
 #: scripts/4_install_rackshift.sh:12
 msgid ""
@@ -430,14 +332,124 @@ msgstr "我们的官网"
 msgid "Documentation"
 msgstr "我们的文档"
 
-#: scripts/4_install_rackshift.sh:76
+#: scripts/4_install_rackshift.sh:77
 msgid "Install and Configure Docker"
 msgstr "安装配置 Docker"
 
-#: scripts/4_install_rackshift.sh:78
+#: scripts/4_install_rackshift.sh:79
 msgid "Loading Docker Image"
 msgstr "加载 Docker 镜像"
 
-#: scripts/4_install_rackshift.sh:80
+#: scripts/4_install_rackshift.sh:81
 msgid "Install and Configure RackShift"
 msgstr "安装配置 RackShift"
+
+#: scripts/5_db_backup.sh:18
+msgid "Backing up"
+msgstr "正在备份"
+
+#: scripts/5_db_backup.sh:24
+msgid "Backup failed"
+msgstr "备份失败"
+
+#: scripts/5_db_backup.sh:28
+msgid "Backup succeeded! The backup file has been saved to"
+msgstr "备份成功! 备份文件已存放至"
+
+#: scripts/6_db_restore.sh:20
+msgid "Start restoring database"
+msgstr "开始还原数据库"
+
+#: scripts/6_db_restore.sh:24
+msgid "file does not exist"
+msgstr "文件不存在"
+
+#: scripts/6_db_restore.sh:35
+msgid ""
+"Database recovery failed. Please check whether the database file is complete "
+"or try to recover manually"
+msgstr "数据库恢复失败. 请检查数据库文件是否完整, 或尝试手动恢复"
+
+#: scripts/6_db_restore.sh:38
+msgid "Database recovered successfully"
+msgstr "数据库恢复成功"
+
+#: scripts/6_db_restore.sh:44
+msgid "Format error"
+msgstr "格式错误"
+
+#: scripts/6_db_restore.sh:48
+msgid "The backup file does not exist"
+msgstr "备份文件不存在"
+
+#: scripts/7_upgrade.sh:28
+msgid "Failed to backup the database. Continue to upgrade"
+msgstr "备份数据库失败, 继续升级吗"
+
+#: scripts/7_upgrade.sh:34
+msgid "Skip database backup"
+msgstr "跳过备份数据库"
+
+#: scripts/7_upgrade.sh:45
+msgid "Are you sure you want to update the current version to"
+msgstr "是否将版本更新至"
+
+#: scripts/7_upgrade.sh:57
+msgid "Upgrade Docker image"
+msgstr "升级镜像文件"
+
+#: scripts/7_upgrade.sh:63
+msgid "Upgrade successfully. You can now restart the program"
+msgstr "升级成功, 可以重启程序了"
+
+#: scripts/8_uninstall.sh:8
+msgid "Make sure you have a backup of data, this operation is not reversible"
+msgstr "请确认已经备份好相关数据, 此操作不可逆"
+
+#: scripts/8_uninstall.sh:11
+msgid "Are you clean up rackshift files"
+msgstr "确认清理 rackshift 相关文件"
+
+#: scripts/8_uninstall.sh:18 scripts/8_uninstall.sh:20
+msgid "Cleaning up"
+msgstr "正在清理"
+
+#: scripts/8_uninstall.sh:27
+msgid "Do you need to clean up the Docker image"
+msgstr "是否清理 Docker 镜像"
+
+#: scripts/8_uninstall.sh:34
+msgid "Cleanup complete"
+msgstr "清理完成"
+
+#: scripts/utils.sh:121
+msgid "no default"
+msgstr "无默认值"
+
+#: scripts/utils.sh:123
+msgid "default"
+msgstr "默认为"
+
+#: scripts/utils.sh:171
+msgid "complete"
+msgstr "完成"
+
+#: scripts/utils.sh:175
+msgid "fail"
+msgstr "失败"
+
+#: scripts/utils.sh:291
+msgid "Check Configuration File"
+msgstr "检查配置文件"
+
+#: scripts/utils.sh:292
+msgid "Path to Configuration file"
+msgstr "配置文件位置"
+
+#: scripts/utils.sh:316
+msgid "Backup Configuration File"
+msgstr "备份配置文件"
+
+#: scripts/utils.sh:318
+msgid "Back up to"
+msgstr "正在备份"

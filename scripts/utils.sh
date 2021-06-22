@@ -354,11 +354,9 @@ function docker_network_check() {
   fi
 }
 
-function upgrade_config() {
-  # 如果配置文件有更新, 则添加到新的配置文件
-  cwd=$(pwd)
-  cd "${PROJECT_DIR}" || exit
-
-  volume_dir=$(get_config VOLUME_DIR)
-  cp -rf config_init/rackhd/conf/version ${volume_dir}/rackhd/conf/version
+function set_current_version(){
+  current_version=$(get_config CURRENT_VERSION)
+  if [ "${current_version}" != "${VERSION}" ]; then
+    set_config CURRENT_VERSION "${VERSION}"
+  fi
 }

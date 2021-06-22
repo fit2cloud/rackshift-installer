@@ -142,10 +142,22 @@ function set_server_ip() {
   echo_done
 }
 
+function set_service_port() {
+  echo_yellow "\n4. $(gettext 'Configure External Port')"
+  http_port=$(get_config HTTP_PORT)
+  confirm="n"
+  read_from_input confirm "$(gettext 'Do you need to customize the RackShift external port')?" "y/n" "${confirm}"
+  if [[ "${confirm}" == "y" ]]; then
+    read_from_input http_port "$(gettext 'RackShift web port')" "" "${http_port}"
+    set_config HTTP_PORT ${http_port}
+  fi
+  echo_done
+}
+
 function init_db() {
   use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
   if [[ "${use_external_mysql}" == "1" ]]; then
-    echo_yellow "\n4. $(gettext 'Init External MySQL')"
+    echo_yellow "\n5. $(gettext 'Init External MySQL')"
     volume_dir=$(get_config VOLUME_DIR)
     docker_network_check
     bash "${BASE_DIR}/6_db_restore.sh" "${volume_dir}/conf/mysql/sql/rackshift.sql" || {
@@ -160,6 +172,7 @@ function main() {
   set_volume_dir
   set_mysql
   set_server_ip
+  set_service_port
   init_db
 }
 
