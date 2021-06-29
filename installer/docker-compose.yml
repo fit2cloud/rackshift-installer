@@ -72,7 +72,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.3.0
     network_mode: host
     privileged: true
     volumes:
@@ -94,7 +94,7 @@ services:
   # RackHD services
 
   rackshift: # 8082
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.2.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.3.0
     privileged: true
     pid: host
     ports:
@@ -131,6 +131,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   plugins:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.3.0
     volumes:
       - /opt/rackshift/plugins:/plugins
+
