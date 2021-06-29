@@ -101,7 +101,7 @@ services:
       - 80:8082
     depends_on:
       - mysql
-      - rackshift-plugins
+      - plugins
     volumes:
       - /opt/rackshift:/opt/rackshift
       - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
@@ -120,7 +120,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
 
-  rackshift-proxy: # 8083
+  proxy: # 8083
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
     privileged: true
     ports:
@@ -130,14 +130,7 @@ services:
       - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
-  rackshift-plugins:
+  plugins:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.0.0
     volumes:
       - /opt/rackshift/plugins:/plugins
-
-  ipmitool:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool:latest
-
-  racadm:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker:latest
-
