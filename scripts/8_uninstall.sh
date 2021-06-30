@@ -7,18 +7,19 @@ PROJECT_DIR=$(dirname ${BASE_DIR})
 function remove_rackshift() {
   echo -e "$(gettext 'Make sure you have a backup of data, this operation is not reversible')! \n"
   VOLUME_DIR=$(get_config VOLUME_DIR)
+  images=$(get_images)
   confirm="n"
-  read_from_input confirm "$(gettext 'Are you clean up rackshift files')?" "y/n" "${confirm}"
+  read_from_input confirm "$(gettext 'Are you clean up RackShift files')?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
     if [[ -f "${CONFIG_FILE}" ]]; then
-      cd "${PROJECT_DIR}"
+      cd "${PROJECT_DIR}" || exit 1
       bash ./rsctl.sh down
       sleep 2s
       echo
       echo -e "$(gettext 'Cleaning up') ${VOLUME_DIR}"
-      rm -rf ${VOLUME_DIR}
+      rm -rf "${VOLUME_DIR}"
       echo -e "$(gettext 'Cleaning up') ${CONFIG_DIR}"
-      rm -rf ${CONFIG_DIR}
+      rm -rf "${CONFIG_DIR}"
       echo_done
     fi
   fi
@@ -26,9 +27,8 @@ function remove_rackshift() {
   confirm="n"
   read_from_input confirm "$(gettext 'Do you need to clean up the Docker image')?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
-    images=$(get_images)
     for image in ${images}; do
-      docker rmi ${image}
+      docker rmi "${image}"
     done
   fi
   echo_green "$(gettext 'Cleanup complete')!"

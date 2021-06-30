@@ -3,19 +3,16 @@ version: '2.4'
 services:
   mongo:
     image: x-lab/mongo:latest
-    container_name: rs_mongo
     network_mode: host
     privileged: true
 
   rabbitmq:
     image: x-lab/rabbitmq:management
-    container_name: rs_rabbitmq
     network_mode: host
     privileged: true
 
   dhcp:
     image: x-lab/isc-dhcp-server:latest
-    container_name: rs_dhcp
     network_mode: host
     privileged: true
     volumes:
@@ -25,7 +22,6 @@ services:
 
   files:
     image: x-lab/rackshift-files:v1.0.0
-    container_name: rs_files
     network_mode: host
     privileged: true
     volumes:
@@ -37,7 +33,6 @@ services:
       - mongo
       - rabbitmq
     image: x-lab/on-dhcp-proxy:v1.0.0
-    container_name: rs_dhcp-proxy
     network_mode: host
     privileged: true
     volumes:
@@ -50,7 +45,6 @@ services:
       - mongo
       - rabbitmq
     image: x-lab/on-http:v1.0.0
-    container_name: rs_http
     network_mode: host
     privileged: true
     volumes:
@@ -62,7 +56,6 @@ services:
       - mongo
       - rabbitmq
     image: x-lab/on-syslog:v1.0.0
-    container_name: rs_syslog
     network_mode: host
     privileged: true
     volumes:
@@ -74,8 +67,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: x-lab/rackshift-taskgraph:v1.0.0
-    container_name: rs_taskgraph
+    image: x-lab/rackshift-taskgraph:${VERSION}
     network_mode: host
     privileged: true
     volumes:
@@ -88,7 +80,6 @@ services:
       - rabbitmq
       - syslog
     image: x-lab/on-tftp:v1.0.0
-    container_name: rs_tftp
     network_mode: host
     privileged: true
     volumes:
@@ -97,7 +88,6 @@ services:
 
   rackshift:
     image: x-lab/rackshift:${VERSION}
-    container_name: rs_core
     privileged: true
     pid: host
     ports:
@@ -111,7 +101,6 @@ services:
 
   rackshift-proxy:
     image: x-lab/rackshift-proxy:v1.0.0
-    container_name: rs_proxy
     privileged: true
     ports:
       - 8083:8083
@@ -121,15 +110,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
-    image: x-lab/rackshift-plugins:v1.0.0
-    container_name: rs_plugins
+    image: x-lab/rackshift-plugins:${VERSION}
     volumes:
       - ${VOLUME_DIR}/plugins:/plugins
 
   ipmitool:
     image: x-lab/ipmitool:latest
-    container_name: rs_ipmitool
 
   racadm:
     image: x-lab/racadm-docker:latest
-    container_name: rs_racadm
