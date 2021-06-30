@@ -1,24 +1,6 @@
 #!/bin/bash
 #
 
-function prepare_check() {
-  isRoot=`id -u -n | grep root | wc -l`
-  if [ "x$isRoot" != "x1" ]; then
-      echo -e "[\033[31m ERROR \033[0m] Please use root to execute the installation script (请用 root 用户执行安装脚本)"
-      exit 1
-  fi
-  processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
-  if [ $processor -lt 2 ]; then
-      echo -e "[\033[31m ERROR \033[0m] The CPU is less than 2 cores (CPU 小于 2核，RackShift 所在机器的 CPU 需要至少 2核)"
-      exit 1
-  fi
-  memTotal=`cat /proc/meminfo | grep MemTotal | awk '{print $2}'`
-  if [ $memTotal -lt 7500000 ]; then
-      echo -e "[\033[31m ERROR \033[0m] Memory less than 8G (内存小于 8G，RackShift 所在机器的内存需要至少 8G)"
-      exit 1
-  fi
-}
-
 function install_soft() {
     if command -v dnf > /dev/null; then
       if [ "$1" == "python" ]; then
@@ -55,7 +37,7 @@ function get_installer() {
   fi
   cd /opt
   if [ ! -d "/opt/rackshift-installer-$Version" ]; then
-    wget -qO rackshift-installer-$Version.tar.gz https://github.com/rackshift/rackshift/releases/download/$Version/rackshift-installer-$Version.tar.gz || {
+    wget -qO rackshift-installer-$Version.tar.gz https://github.com/rackshift/rackshift-installer/releases/download/$Version/rackshift-installer-$Version.tar.gz || {
       rm -rf /opt/rackshift-installer-$Version.tar.gz
       echo -e "[\033[31m ERROR \033[0m] Failed to download rackshift-installer (下载 rackshift-installer 失败, 请检查网络是否正常或尝试重新执行脚本)"
       exit 1
@@ -71,10 +53,7 @@ function get_installer() {
   ./rsctl.sh install
 }
 
-
-
 function main(){
-  prepare_check
   prepare_install
   get_installer
 }

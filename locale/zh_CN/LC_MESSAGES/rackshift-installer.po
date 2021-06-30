@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-30 16:12+0800\n"
+"POT-Creation-Date: 2021-06-30 22:10+0800\n"
 "Language-Team: Language locale/zh\n"
 "Language: locale/zh_CN/LC_MESSAGES/rackshift-installer\n"
 "MIME-Version: 1.0\n"
@@ -190,6 +190,7 @@ msgid "Set Service IP"
 msgstr "设置服务 IP"
 
 #: scripts/1_config_rackshift.sh:133
+#, fuzzy
 msgid "Please enter the server IP (PXE network) address to use as rackshift"
 msgstr "请输入用作 RackShift 的服务器 IP（PXE 网卡） 地址"
 
@@ -294,7 +295,7 @@ msgstr "更多还有一些命令, 你可以 ./rsctl.sh --help 来了解"
 
 #: scripts/4_install_rackshift.sh:39
 msgid "Web access"
-msgstr ""
+msgstr "Web 访问"
 
 #: scripts/4_install_rackshift.sh:41
 msgid "Default username"
@@ -328,15 +329,15 @@ msgstr "加载 Docker 镜像"
 msgid "Install and Configure RackShift"
 msgstr "安装配置 RackShift"
 
-#: scripts/5_db_backup.sh:18
+#: scripts/5_db_backup.sh:20
 msgid "Backing up"
 msgstr "正在备份"
 
-#: scripts/5_db_backup.sh:25
+#: scripts/5_db_backup.sh:27
 msgid "Backup failed"
 msgstr "备份失败"
 
-#: scripts/5_db_backup.sh:29
+#: scripts/5_db_backup.sh:31
 msgid "Backup succeeded! The backup file has been saved to"
 msgstr "备份成功! 备份文件已存放至"
 
@@ -407,7 +408,7 @@ msgstr "请确认已经备份好相关数据, 此操作不可逆"
 #: scripts/8_uninstall.sh:12
 #, fuzzy
 msgid "Are you clean up RackShift files"
-msgstr "确认清理 rackshift 相关文件"
+msgstr "确认清理 RackShift 相关文件"
 
 #: scripts/8_uninstall.sh:19 scripts/8_uninstall.sh:21
 msgid "Cleaning up"
@@ -452,16 +453,3 @@ msgstr "备份配置文件"
 #: scripts/utils.sh:331
 msgid "Back up to"
 msgstr "正在备份"
-
-#~ msgid "Reconfig successfully. You can now restart the program"
-#~ msgstr "重置成功. 请重新启动程序"
-
-#~ msgid ""
-#~ "Reset failed, please try again or check whether the database is normal"
-#~ msgstr "重置失败, 请重试或者检查数据库是否正常"
-
-#~ msgid "Docker image not found"
-#~ msgstr "镜像文件没有发现"
-
-#~ msgid "Not set"
-#~ msgstr "未设置"

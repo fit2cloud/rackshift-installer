@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-30 16:12+0800\n"
+"POT-Creation-Date: 2021-06-30 22:10+0800\n"
 "Language-Team: Language locale/zh\n"
 "Language: locale/en/LC_MESSAGES/rackshift-installer\n"
 "MIME-Version: 1.0\n"
@@ -325,15 +325,15 @@ msgstr ""
 msgid "Install and Configure RackShift"
 msgstr ""
 
-#: scripts/5_db_backup.sh:18
+#: scripts/5_db_backup.sh:20
 msgid "Backing up"
 msgstr ""
 
-#: scripts/5_db_backup.sh:25
+#: scripts/5_db_backup.sh:27
 msgid "Backup failed"
 msgstr ""
 
-#: scripts/5_db_backup.sh:29
+#: scripts/5_db_backup.sh:31
 msgid "Backup succeeded! The backup file has been saved to"
 msgstr ""
 
