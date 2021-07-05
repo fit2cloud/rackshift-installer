@@ -49,7 +49,7 @@ function set_volume_dir() {
     cp config_init/rackhd/monorail/config.json.bak ${volume_dir}/rackhd/monorail/config.json
   fi
   if [[ -d "${PROJECT_DIR}/config_init/plugins" ]]; then
-    \cp -rf ${PROJECT_DIR}/config_init/plugins ${volume_dir}
+    cp -rf ${PROJECT_DIR}/config_init/plugins ${volume_dir}
   fi
   echo_done
 }
@@ -133,7 +133,7 @@ function set_server_ip() {
   read_from_input confirm "$(gettext 'Use IP address') ${rackshift_ip}?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
     volume_dir=$(get_config VOLUME_DIR)
-    sed -i "s/172.31.128.1/${rackshift_ip}/g" ${volume_dir}/conf/mysql/sql/rackshift.sql
+    cp ${volume_dir}/rackhd/monorail/config.json.bak ${volume_dir}/rackhd/monorail/config.json
     sed -i "s/172.31.128.1/${rackshift_ip}/g" ${volume_dir}/rackhd/monorail/config.json
   else
     set_server_ip

@@ -74,7 +74,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:${VERSION}
     container_name: rs_taskgraph
     network_mode: host
     privileged: true
@@ -121,15 +121,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:${VERSION}
     container_name: rs_plugins
     volumes:
       - ${VOLUME_DIR}/plugins:/plugins
-
-  ipmitool:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool:latest
-    container_name: rs_ipmitool
-
-  racadm:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker:latest
-    container_name: rs_racadm

@@ -102,6 +102,15 @@ function main() {
   case "${action}" in
     install)
       bash "${SCRIPT_DIR}/4_install_rackshift.sh"
+      cp rsctl.sh /usr/local/bin/rsctl && chmod +x /usr/local/bin/rsctl
+      if [ -f "/usr/bin/rsctl" ]; then
+        rm -rf /usr/bin/rsctl
+      fi
+      ln -s /usr/local/bin/rsctl /usr/bin/rsctl
+      cp rsctl.sh /etc/init.d/rackshift
+      chmod a+x /etc/init.d/rackshift
+      chkconfig rackshift on >>/dev/null
+      start
       ;;
     upgrade)
       bash "${SCRIPT_DIR}/7_upgrade.sh" "$target"
