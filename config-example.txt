@@ -19,5 +19,8 @@ DB_USER=root
 DB_PASSWORD=
 DB_NAME=rackshift
 
-## Nginx 配置
+## Service 端口
 HTTP_PORT=80
+
+# 额外的配置
+CURRENT_VERSION=

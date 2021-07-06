@@ -2,20 +2,17 @@ version: '2.4'
 
 services:
   mongo:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/mongo:latest
-    container_name: rs_mongo
+    image: x-lab/mongo:latest
     network_mode: host
     privileged: true
 
   rabbitmq:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rabbitmq:management
-    container_name: rs_rabbitmq
+    image: x-lab/rabbitmq:management
     network_mode: host
     privileged: true
 
   dhcp:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/isc-dhcp-server:latest
-    container_name: rs_dhcp
+    image: x-lab/isc-dhcp-server:latest
     network_mode: host
     privileged: true
     volumes:
@@ -24,8 +21,7 @@ services:
       - ${VOLUME_DIR}/rackhd/dhcp/defaults:/etc/defaults
 
   files:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-files:v1.0.0
-    container_name: rs_files
+    image: x-lab/rackshift-files:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -36,8 +32,7 @@ services:
       - dhcp
       - mongo
       - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-dhcp-proxy:v1.0.0
-    container_name: rs_dhcp-proxy
+    image: x-lab/on-dhcp-proxy:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -49,8 +44,7 @@ services:
       - files
       - mongo
       - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-http:v1.0.0
-    container_name: rs_http
+    image: x-lab/on-http:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -61,8 +55,7 @@ services:
     depends_on:
       - mongo
       - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-syslog:v1.0.0
-    container_name: rs_syslog
+    image: x-lab/on-syslog:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -74,8 +67,8 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:${VERSION}
     container_name: rs_taskgraph
+    image: x-lab/rackshift-taskgraph:${VERSION}
     network_mode: host
     privileged: true
     volumes:
@@ -87,8 +80,7 @@ services:
       - mongo
       - rabbitmq
       - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-tftp:v1.0.0
-    container_name: rs_tftp
+    image: x-lab/on-tftp:v1.0.0
     network_mode: host
     privileged: true
     volumes:
@@ -96,8 +88,7 @@ services:
       - ${VOLUME_DIR}/rackhd/monorail:/opt/monorail
 
   rackshift:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:${VERSION}
-    container_name: rs_core
+    image: x-lab/rackshift:${VERSION}
     privileged: true
     pid: host
     ports:
@@ -110,8 +101,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-proxy:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
-    container_name: rs_proxy
+    image: x-lab/rackshift-proxy:v1.0.0
     privileged: true
     ports:
       - 8083:8083
@@ -121,7 +111,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   rackshift-plugins:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:${VERSION}
     container_name: rs_plugins
+    image: x-lab/rackshift-plugins:${VERSION}
     volumes:
       - ${VOLUME_DIR}/plugins:/plugins

@@ -10,16 +10,12 @@ cd "${BASE_DIR}" || return
 function load_image_files() {
   images=$(get_images)
   for image in ${images}; do
-    echo ""
     filename=$(basename "${image}").tar
     filename_windows=${filename/:/_}
     if [[ -f ${IMAGE_DIR}/${filename_windows} ]]; then
       filename=${filename_windows}
     fi
     if [[ ! -f ${IMAGE_DIR}/${filename} ]]; then
-      if [[ ! ${filename} =~ xpack* && ! ${filename} =~ omnidb* ]]; then
-        echo_red "$(gettext 'Docker image not found'): ${IMAGE_DIR}/${filename}"
-      fi
       continue
     fi
 
@@ -47,25 +43,24 @@ function pull_image() {
   i=1
   for image in ${images}; do
     echo "[${image}]"
-    if [[ ! "$(docker images | grep $(echo ${image%:*}) | grep $(echo ${image#*:}))" ]]; then
-      if [[ -n "${DOCKER_IMAGE_PREFIX}" && $(image_has_prefix "${image}") == "0" ]]; then
-        docker pull "${DOCKER_IMAGE_PREFIX}/${image}"
-      else
-        log_error "$(gettext 'Not set') DOCKER_IMAGE_PREFIX"
-        exit 1
-      fi
+    if [[ -n "${DOCKER_IMAGE_PREFIX}" && $(image_has_prefix "${image}") == "0" ]]; then
+      docker pull "${DOCKER_IMAGE_PREFIX}/${image}"
+      docker tag "${DOCKER_IMAGE_PREFIX}/${image}" "${image}"
+      docker rmi -f "${DOCKER_IMAGE_PREFIX}/${image}"
+    else
+      docker pull "${image}"
     fi
-    echo ""
     ((i++)) || true
   done
 }
 
 function main() {
-  if [[ -d "${IMAGE_DIR}" && -f "${IMAGE_DIR}mysql:5.7.31.tar" ]]; then
+  if [[ -d "${IMAGE_DIR}" && -f "${IMAGE_DIR}/mysql:5.7.31.tar" ]]; then
     load_image_files
   else
     pull_image
   fi
+  echo_done
 }
 
 if [[ "$0" == "${BASH_SOURCE[0]}" ]]; then
