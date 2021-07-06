@@ -142,6 +142,7 @@ function set_server_ip() {
     cp ${volume_dir}/rackhd/monorail/config.json.bak ${volume_dir}/rackhd/monorail/config.json
     sed -i "s/172.31.128.1/${rackshift_ip}/g" ${volume_dir}/rackhd/monorail/config.json
   else
+    sed -i 's/^RACKSHIFT_IP=.*$/RACKSHIFT_IP=/' /opt/rackshift/config/config.txt
     set_server_ip
   fi
   set_config RACKSHIFT_IP "${rackshift_ip}"
