@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#chkconfig: - 85 15
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 # shellcheck source=scripts/utils.sh
 . "${PROJECT_DIR}/scripts/utils.sh"
@@ -135,7 +135,7 @@ function main() {
       cp rsctl.sh /etc/init.d/rackshift
       chmod a+x /etc/init.d/rackshift
       chkconfig rackshift on >>/dev/null
-      start
+      $(get_docker_compose_cmd_line) up -d
       ;;
     upgrade)
       bash "${SCRIPT_DIR}/7_upgrade.sh" "$target"
