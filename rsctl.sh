@@ -131,6 +131,8 @@ function main() {
       sed -i 's/alias rsctl.*//' ~/.bashrc
       echo alias rsctl='"cd ${PROJECT_DIR} && ./rsctl.sh"' >> ~/.bashrc
       source ~/.bashrc
+      rm -rf /etc/profile.d/start_rackshift.sh
+      echo 'rsctl start' >> /etc/profile.d/start_rackshift.sh
       $(get_docker_compose_cmd_line) up -d
       ;;
     upgrade)

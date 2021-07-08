@@ -87,17 +87,15 @@ function get_images() {
     "x-lab/mongo:latest"
     "x-lab/rabbitmq:management"
     "x-lab/isc-dhcp-server:latest"
-    "x-lab/ipmitool:latest"
-    "x-lab/racadm-docker:latest"
     "x-lab/rackshift-files:v1.0.0"
     "x-lab/on-dhcp-proxy:v1.0.0"
     "x-lab/on-http:v1.0.0"
     "x-lab/on-syslog:v1.0.0"
-    "x-lab/rackshift-taskgraph:${VERSION}"
+    "x-lab/rackshift-taskgraph:1.3.0"
     "x-lab/on-tftp:v1.0.0"
     "x-lab/rackshift:${VERSION}"
     "x-lab/rackshift-proxy:v1.0.0"
-    "x-lab/rackshift-plugins:${VERSION}"
+    "x-lab/rackshift-plugins:1.3.0"
   )
   for image in "${images[@]}"; do
     echo "${image}"
@@ -187,7 +185,7 @@ function log_error() {
 
 function get_docker_compose_services() {
   ignore_db="$1"
-  services="mongo rabbitmq dhcp files dhcp-proxy http syslog taskgraph tftp rackshift rackshift-proxy rackshift-plugins ipmitool racadm"
+  services="mongo rabbitmq dhcp files dhcp-proxy http syslog taskgraph tftp rackshift rackshift-proxy rackshift-plugins"
   use_external_mysql=$(get_config USE_EXTERNAL_MYSQL)
   if [[ "${use_external_mysql}" != "1" && "${ignore_db}" != "ignore_db" ]]; then
     services+=" mysql"
