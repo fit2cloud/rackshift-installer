@@ -127,11 +127,7 @@ function main() {
   case "${action}" in
     install)
       bash "${SCRIPT_DIR}/4_install_rackshift.sh"
-      cp rsctl.sh /usr/local/bin/rsctl && chmod +x /usr/local/bin/rsctl
-      if [ -f "/usr/bin/rsctl" ]; then
-        rm -rf /usr/bin/rsctl
-      fi
-      echo alias rsctl="cd ${BASE_DIR} && ./rsctl.sh" >> ~/.bashrc
+      echo alias rsctl="cd ${PROJECT_DIR} && ./rsctl.sh" >> ~/.bashrc
       source ~/.bashrc
       $(get_docker_compose_cmd_line) up -d
       ;;
