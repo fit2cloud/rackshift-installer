@@ -131,10 +131,8 @@ function main() {
       if [ -f "/usr/bin/rsctl" ]; then
         rm -rf /usr/bin/rsctl
       fi
-      ln -s /usr/local/bin/rsctl /usr/bin/rsctl
-      cp rsctl.sh /etc/init.d/rackshift
-      chmod a+x /etc/init.d/rackshift
-      chkconfig rackshift on >>/dev/null
+      echo alias rsctl="cd ${BASE_DIR} && ./rsctl.sh" >> ~/.bashrc
+      source ~/.bashrc
       $(get_docker_compose_cmd_line) up -d
       ;;
     upgrade)
