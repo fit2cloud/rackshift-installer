@@ -128,7 +128,8 @@ function main() {
     install)
       bash "${SCRIPT_DIR}/4_install_rackshift.sh"
       chmod +x ./rsctl.sh
-      echo alias 'rsctl="cd ${PROJECT_DIR} && ./rsctl.sh"' >> ~/.bashrc
+      sed -i 's/alias rsctl.*//' ~/.bashrc
+      echo alias rsctl='"cd ${PROJECT_DIR} && ./rsctl.sh"' >> ~/.bashrc
       source ~/.bashrc
       $(get_docker_compose_cmd_line) up -d
       ;;
