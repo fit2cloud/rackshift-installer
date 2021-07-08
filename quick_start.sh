@@ -30,7 +30,7 @@ function prepare_install() {
 }
 
 function get_installer() {
-  echo "download install script to /opt/rackshift-installe (开始下载安装脚本到 /opt/rackshift-installe)"
+  echo "download install script to /opt/rackshift-installe (开始下载安装脚本到 /opt/rackshift-installer)"
   Version=$(curl -s 'https://api.github.com/repos/rackshift/rackshift/releases/latest' | grep "tag_name" | head -n 1 | awk -F ":" '{print $2}' | sed 's/\"//g;s/,//g;s/ //g')
   if [ ! "$Version" ]; then
     echo -e "[\033[31m ERROR \033[0m] Network Failed (请检查网络是否正常或尝试重新执行脚本)"

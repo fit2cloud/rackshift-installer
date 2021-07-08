@@ -135,7 +135,7 @@ function set_server_ip() {
       rackshift_ip=$(hostname -I | cut -d ' ' -f1)
     fi
   fi
-  confirm="y"
+  confirm="n"
   read_from_input confirm "$(gettext 'Use IP address') ${rackshift_ip}?" "y/n" "${confirm}"
   if [[ "${confirm}" == "y" ]]; then
     volume_dir=$(get_config VOLUME_DIR)
