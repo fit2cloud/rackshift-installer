@@ -91,7 +91,7 @@ function get_images() {
     "x-lab/on-dhcp-proxy:v1.0.0"
     "x-lab/on-http:v1.0.0"
     "x-lab/on-syslog:v1.0.0"
-    "x-lab/rackshift-taskgraph:1.3.0"
+    "x-lab/rackshift-taskgraph:v1.3.0"
     "x-lab/on-tftp:v1.0.0"
     "x-lab/rackshift:${VERSION}"
     "x-lab/rackshift-proxy:v1.0.0"

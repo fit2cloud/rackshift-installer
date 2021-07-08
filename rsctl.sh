@@ -129,10 +129,11 @@ function main() {
       bash "${SCRIPT_DIR}/4_install_rackshift.sh"
       chmod +x ./rsctl.sh
       sed -i 's/alias rsctl.*//' ~/.bashrc
-      echo alias rsctl='"cd ${PROJECT_DIR} && ./rsctl.sh"' >> ~/.bashrc
+      echo "alias rsctl='cd "${PROJECT_DIR}" && ./rsctl.sh'" >> ~/.bashrc
       source ~/.bashrc
-      rm -rf /etc/profile.d/start_rackshift.sh
-      echo 'rsctl start' >> /etc/profile.d/start_rackshift.sh
+      chmod +x /etc/rc.d/rc.local
+      sed -i 's/^cd.*start.*$//' /etc/rc.d/rc.local
+      echo "cd "${PROJECT_DIR}" && ./rsctl.sh start" >> /etc/rc.d/rc.local
       $(get_docker_compose_cmd_line) up -d
       ;;
     upgrade)
