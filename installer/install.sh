@@ -7,7 +7,7 @@ green=32
 yellow=33
 blue=34
 validationPassed=1
-upgrade=$1
+cmd=$1
 
 function printTitle() {
   echo -e "\n\n**********\t ${1} \t**********\n"
@@ -37,7 +37,7 @@ systemName=" RackShift 服务"
 versionInfo=$(cat ../rackhd/conf/version)
 
 ##配置 rackshift IP
-if [ ! $upgrade ]; then
+if [ ! $cmd ]; then
   if [ ! "$serverIp" ]; then
   printTitle "配置 RackShift 服务 IP 地址:"
   echo "请输入 RackShift 当前 IP 地址(与物理机 PXE 口属于同一个 VLAN )："
@@ -188,7 +188,7 @@ if [ $? != 0 ]; then
 fi
 
 hasLsof=$(which lsof 2>&1)
-if [ ! $upgrade ]; then
+if [ ! $cmd ]; then
   if [[ ! $hasLsof =~ "no lsof" ]]; then
     rackshiftPorts=$(grep -A 1 "ports:$" ./docker-compose.yml | grep "\-.*:" | awk -F":" '{print $1}' | awk -F" " '{print $2}')
     for rackshiftPort in ${rackshiftPorts}; do
@@ -213,11 +213,17 @@ if [ $(grep "vm.max_map_count" /etc/sysctl.conf | wc -l) -eq 0 ]; then
 fi
 
 ##配置 rackshift
-if [ ! $upgrade ]; then
+if [ ! $cmd ]; then
   printTitle "配置  RackShift服务"
   echo -ne "配置  RackShift服务 \t........................ "
   mkdir -p /opt/rackshift/logs
+  if [ -f /opt/rackshift/rackhd/dhcp/config/dhcpd.conf ];then
+    mv -f /opt/rackshift/rackhd/dhcp/config/dhcpd.conf /tmp
+  fi
   cp -rpf ../rackhd /opt/rackshift
+  if [ -f /tmp/dhcpd.conf ];then
+    mv -f /tmp/dhcpd.conf /opt/rackshift/rackhd/dhcp/config/dhcpd.conf
+  fi
   cp rsctl /etc/init.d/rackshift
   chmod a+x /etc/init.d/rackshift
   mkdir -p /opt/rackshift/conf/mysql/sql
@@ -265,6 +271,11 @@ colorMsg $green "[OK]"
 
 printTitle "启动  RackShift 服务"
 rsctl stop
+if [ $cmd == "online" ];then
+  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.0.0
+  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/kciepluc/racadm-docker
+  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/rackshift/kfox1111/ipmitool
+fi
 rsctl reload
 if [ $? -eq 0 ]; then
   echo -ne "启动  RackShift 服务 \t........................ "

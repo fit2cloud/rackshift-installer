@@ -33,4 +33,4 @@ if [ ! -f ./rackshiftV${VERSION}/installer ]; then
 fi
 cd rackshiftV${VERSION}/installer
 
-/bin/bash install.sh
+/bin/bash install.sh online

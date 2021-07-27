@@ -135,3 +135,6 @@ services:
     volumes:
       - /opt/rackshift/plugins:/plugins
 
+  kvm:
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.0.0
+
