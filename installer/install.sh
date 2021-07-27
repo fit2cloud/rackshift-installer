@@ -273,8 +273,8 @@ printTitle "启动  RackShift 服务"
 rsctl stop
 if [ $cmd == "online" ];then
   docker pull registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.0.0
-  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/kciepluc/racadm-docker
-  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/kfox1111/ipmitool
+  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker
+  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool
 fi
 rsctl reload
 if [ $? -eq 0 ]; then
