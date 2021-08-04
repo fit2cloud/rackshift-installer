@@ -2,6 +2,15 @@
 
 version: '2'
 
+networks:
+  rs-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.1.0/24
+          gateway: 172.19.1.1
+
 services:
 
   mongo: # 27017
@@ -41,7 +50,7 @@ services:
     network_mode: host
     privileged: true
     volumes:
-      - /opt/rackshift/rackhd/dhcp :/var/lib/dhcp
+      - /opt/rackshift/rackhd/dhcp:/var/lib/dhcp
       - ./rackhd/monorail:/opt/monorail
 
   http: # 9090, 9080
@@ -106,6 +115,8 @@ services:
       - /opt/rackshift:/opt/rackshift
       - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - rs-network
 
   mysql:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31
@@ -119,6 +130,8 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - rs-network
 
   proxy: # 8083
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
@@ -129,6 +142,8 @@ services:
       - /opt/rackshift:/opt/rackshift
       - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - rs-network
 
   plugins:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.4.0

@@ -37,7 +37,7 @@ systemName=" RackShift 服务"
 versionInfo=$(cat ../rackhd/conf/version)
 
 ##配置 rackshift IP
-if [ ! $cmd ]; then
+if [ "$cmd" != "upgrade" ]; then
   if [ ! "$serverIp" ]; then
   printTitle "配置 RackShift 服务 IP 地址:"
   echo "请输入 RackShift 当前 IP 地址(与物理机 PXE 口属于同一个 VLAN )："
@@ -188,7 +188,7 @@ if [ $? != 0 ]; then
 fi
 
 hasLsof=$(which lsof 2>&1)
-if [ ! $cmd ]; then
+if [ "$cmd" != "upgrade" ]; then
   if [[ ! $hasLsof =~ "no lsof" ]]; then
     rackshiftPorts=$(grep -A 1 "ports:$" ./docker-compose.yml | grep "\-.*:" | awk -F":" '{print $1}' | awk -F" " '{print $2}')
     for rackshiftPort in ${rackshiftPorts}; do
@@ -213,7 +213,7 @@ if [ $(grep "vm.max_map_count" /etc/sysctl.conf | wc -l) -eq 0 ]; then
 fi
 
 ##配置 rackshift
-if [ ! $cmd ]; then
+if [ "$cmd" != "upgrade" ]; then
   printTitle "配置  RackShift服务"
   echo -ne "配置  RackShift服务 \t........................ "
   mkdir -p /opt/rackshift/logs
