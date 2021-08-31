@@ -233,6 +233,7 @@ if [ "$cmd" != "upgrade" ]; then
   mkdir -p /opt/rackshift/plugins
   cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
   sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
 else
   serverIp=`cat /opt/rackshift/rackhd/monorail/config.json | grep "apiServerAddress" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}'`
 fi
