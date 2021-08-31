@@ -229,13 +229,17 @@ if [ "$cmd" != "upgrade" ]; then
   mkdir -p /opt/rackshift/conf/mysql/sql
   cp ./mysql.cnf /opt/rackshift/conf/mysql
   cp ./rackshift.sql /opt/rackshift/conf/mysql/sql
-  cp ./rackshift.properties /opt/rackshift/conf
   cp ./.env /opt/rackshift
   mkdir -p /opt/rackshift/plugins
   cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
   sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/rackshift.properties
+else
+  serverIp=`cat /opt/rackshift/rackhd/monorail/config.json | grep "apiServerAddress" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}'`
 fi
+cp ./rackshift.properties /opt/rackshift/conf
+cp ../rackhd/monorail/rackshift.properties.bak /opt/rackshift/rackhd/monorail/rackshift.properties.bak
+sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/rackshift.properties
+
 cp ./docker-compose.yml /opt/rackshift
 cp ../rackhd/conf/version /opt/rackshift/rackhd/conf/version
 if [ -d ../plugins ]; then
