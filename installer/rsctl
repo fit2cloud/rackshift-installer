@@ -73,15 +73,15 @@ function main() {
       VERSION=$(curl -s https://github.com/rackshift/rackshift/releases/latest/download 2>&1 | grep -Po '[0-9]+\.[0-9]+\.[0-9]+.*(?=")')
     fi
 
-    if [ ! -f /tmp/rackshiftV${VERSION}.tar.gz ]; then
-      wget --no-check-certificate https://github.com/rackshift/rackshift/releases/latest/download/rackshiftV${VERSION}.tar.gz -O /tmp/rackshiftV${VERSION}.tar.gz
+    if [ ! -f /tmp/rackshift-online-installer-v${VERSION}.tar.gz ]; then
+      wget --no-check-certificate https://github.com/rackshift/rackshift/releases/latest/download/rackshift-online-installer-v${VERSION}.tar.gz -O /tmp/rackshift-online-installer-v${VERSION}.tar.gz
     fi
     cd /tmp
-    tar zxvf rackshiftV${VERSION}.tar.gz
-    cd rackshiftV${VERSION}/installer
+    tar zxvf rackshift-online-installer-v${VERSION}.tar.gz
+    cd rackshift-online-installer-v${VERSION}/installer
 
     /bin/bash install.sh upgrade
-    cd /tmp && rm -rf rackshiftV${VERSION}
+    cd /tmp && rm -rf rackshift-online-installer-v${VERSION}
     ;;
 
   uninstall)

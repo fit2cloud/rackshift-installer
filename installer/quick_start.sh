@@ -24,13 +24,13 @@ if [ -z "$VERSION" ]; then
   exit
 fi
 
-if [ ! -f ./rackshiftV${VERSION}.tar.gz ]; then
-      wget --no-check-certificate https://github.com/rackshift/rackshift/releases/latest/download/rackshiftV${VERSION}.tar.gz
+if [ ! -f ./rackshift-online-installer-v${VERSION}.tar.gz ]; then
+      wget --no-check-certificate https://github.com/rackshift/rackshift/releases/latest/download/rackshift-online-installer-v${VERSION}.tar.gz
 fi
 
-if [ ! -f ./rackshiftV${VERSION}/installer ]; then
-      tar zxvf rackshiftV${VERSION}.tar.gz
+if [ ! -f ./rackshift-online-installer-v${VERSION}/installer ]; then
+      tar zxvf rackshift-online-installer-v${VERSION}.tar.gz
 fi
-cd rackshiftV${VERSION}/installer
+cd rackshift-online-installer-v${VERSION}/installer
 
 /bin/bash install.sh online
