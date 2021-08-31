@@ -1,0 +1,154 @@
+# Copyright 2016, EMC, Inc.
+
+version: '2'
+
+networks:
+  rs-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.10.1.0/24
+          gateway: 172.10.1.1
+
+services:
+
+  mongo: # 27017
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/mongo:latest
+    network_mode: host
+    privileged: true
+
+  rabbitmq: # 5672, 15672
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rabbitmq:management
+    network_mode: host
+    privileged: true
+
+  dhcp: # 67/udp
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/isc-dhcp-server:latest
+    network_mode: host
+    privileged: true
+    volumes:
+      - /opt/rackshift/rackhd/dhcp:/var/lib/dhcp
+      - ./rackhd/dhcp/config:/etc/dhcp
+      - ./rackhd/dhcp/defaults:/etc/defaults
+
+  files:
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-files:v1.0.0
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./rackhd/files/mount:/files
+
+  # RackHD services
+
+  dhcp-proxy-new: # 68/udp, 4011
+    depends_on:
+      - dhcp
+      - mongo
+      - rabbitmq
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-dhcp-proxy:v1.5.0-dev
+    network_mode: host
+    privileged: true
+    volumes:
+      - /opt/rackshift/conf:/opt/rackshift/conf
+
+  http: # 9090, 9080
+    depends_on:
+      - files
+      - mongo
+      - rabbitmq
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-http:v1.0.0
+    network_mode: host
+    privileged: true
+    volumes:
+      - /opt/rackshift/rackhd/files/mount/common:/RackHD/on-http/static/http/common
+      - ./rackhd/monorail:/opt/monorail
+
+  syslog: # 514/udp
+    depends_on:
+      - mongo
+      - rabbitmq
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-syslog:v1.0.0
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./rackhd/monorail:/opt/monorail
+
+  taskgraph:
+    depends_on:
+      - dhcp
+      - mongo
+      - rabbitmq
+      - syslog
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.5.0
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./rackhd/monorail:/opt/monorail
+
+  tftp: # 69/udp
+    depends_on:
+      - files
+      - mongo
+      - rabbitmq
+      - syslog
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-tftp:v1.0.0
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./rackhd/files/mount:/RackHD/on-tftp/static/tftp
+      - ./rackhd/monorail:/opt/monorail
+
+  # RackHD services
+
+  rackshift: # 8082
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.5.0
+    privileged: true
+    pid: host
+    ports:
+      - 80:8082
+    depends_on:
+      - mysql
+      - plugins
+    volumes:
+      - /opt/rackshift:/opt/rackshift
+      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - rs-network
+
+  mysql:
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - /opt/rackshift/conf/mysql:/etc/mysql
+      - /opt/rackshift/data/mysql:/var/lib/mysql
+      - /opt/rackshift/conf/mysql/sql:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+    networks:
+      - rs-network
+
+  proxy: # 8083
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-proxy:v1.0.0
+    privileged: true
+    ports:
+      - 8083:8083
+    volumes:
+      - /opt/rackshift:/opt/rackshift
+      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - rs-network
+
+  plugins:
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.4.0
+    volumes:
+      - /opt/rackshift/plugins:/plugins
+
+  kvm:
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.0.0
+
