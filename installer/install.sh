@@ -234,7 +234,7 @@ if [ "$cmd" != "upgrade" ]; then
   mkdir -p /opt/rackshift/plugins
   cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
   sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
+  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/rackshift.properties
 fi
 cp ./docker-compose.yml /opt/rackshift
 cp ../rackhd/conf/version /opt/rackshift/rackhd/conf/version
