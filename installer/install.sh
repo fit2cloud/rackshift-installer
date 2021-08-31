@@ -237,6 +237,7 @@ if [ "$cmd" != "upgrade" ]; then
   sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
 fi
 cp ./docker-compose.yml /opt/rackshift
+cp ../rackhd/conf/version /opt/rackshift/rackhd/conf/version
 if [ -d ../plugins ]; then
   cp -rf ../plugins/* /opt/rackshift/plugins
 fi
