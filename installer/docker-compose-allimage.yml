@@ -135,5 +135,5 @@ services:
       - /opt/rackshift/plugins:/plugins
 
   kvm:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.5.1
 
