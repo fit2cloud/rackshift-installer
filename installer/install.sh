@@ -278,7 +278,7 @@ colorMsg $green "[OK]"
 printTitle "启动  RackShift 服务"
 rsctl stop
 if [ "$cmd" == "online" ];then
-  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.0.0
+  docker pull registry.cn-qingdao.aliyuncs.com/x-lab/kvm:v1.5.1
   docker pull registry.cn-qingdao.aliyuncs.com/x-lab/racadm-docker
   docker pull registry.cn-qingdao.aliyuncs.com/x-lab/ipmitool
 fi
