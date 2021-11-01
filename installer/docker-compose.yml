@@ -39,6 +39,13 @@ services:
     volumes:
       - ./rackhd/files/mount:/var/tftpboot
 
+  http: # 9090/udp
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/httpd:v1.6.0
+    network_mode: host
+    privileged: true
+    volumes:
+      - ./rackhd/files/mount/common:/usr/local/apache2/htdocs/
+
   rackshift: # 8082 9030
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.6.0-dev
     privileged: true
