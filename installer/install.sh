@@ -297,7 +297,7 @@ printTitle "正在开放必要端口"
 notRunning=$(firewall-cmd --state 2>&1)
 if [[ "${notRunning}" == "running" ]]; then
   firewall-cmd --zone=public --add-port=80/tcp --permanent 1>>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=8080/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=8082/tcp --permanent 1>>$installLog 2>/dev/null
   firewall-cmd --zone=public --add-port=8083/tcp --permanent 1>>$installLog 2>/dev/null
   firewall-cmd --zone=public --add-port=8443/tcp --permanent 1>>$installLog 2>/dev/null
   firewall-cmd --zone=public --add-port=9080/tcp --permanent 1>>$installLog 2>/dev/null

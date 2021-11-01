@@ -1,4 +1,4 @@
-# Copyright 2016, EMC, Inc.
+# Copyright 2021, FIT2CLOUD
 
 version: '2'
 
@@ -39,12 +39,10 @@ services:
     volumes:
       - ./rackhd/files/mount:/var/tftpboot
 
-  rackshift: # 8082
+  rackshift: # 8082 9030
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.6.0-dev
     privileged: true
-    pid: host
-    ports:
-      - 80:8082
+    network_mode: host
     depends_on:
       - mysql
       - plugins
