@@ -26,7 +26,7 @@ services:
       - ./rackhd/files/mount:/files
 
   dhcp-proxy-new: # 68/udp, 4011
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-dhcp-proxy:v1.6.0-dev
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-dhcp-proxy:v1.6.0
     network_mode: host
     privileged: true
     volumes:
@@ -40,16 +40,15 @@ services:
       - ./rackhd/files/mount:/var/tftpboot
 
   http: # 9090/udp
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/httpd:v1.6.0
-    network_mode: host
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/httpfile:v1.6.0
     privileged: true
     ports:
-      - 9090:80
+      - 9090:8080
     volumes:
-      - ./rackhd/files/mount/common:/usr/local/apache2/htdocs/
+      - ./rackhd/files/mount:/data
 
   rackshift: # 8082 9030
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.6.0-dev
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.6.0
     privileged: true
     network_mode: host
     depends_on:
@@ -82,7 +81,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   plugins:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.5.1
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.6.0
     volumes:
       - /opt/rackshift/plugins:/plugins
 
