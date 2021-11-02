@@ -43,6 +43,8 @@ services:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/httpd:v1.6.0
     network_mode: host
     privileged: true
+    ports:
+      - 9090:80
     volumes:
       - ./rackhd/files/mount/common:/usr/local/apache2/htdocs/
 
@@ -55,7 +57,6 @@ services:
       - plugins
     volumes:
       - /opt/rackshift:/opt/rackshift
-      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   mysql:
@@ -78,7 +79,6 @@ services:
       - 8083:8083
     volumes:
       - /opt/rackshift:/opt/rackshift
-      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   plugins:
