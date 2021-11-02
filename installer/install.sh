@@ -231,14 +231,15 @@ if [ "$cmd" != "upgrade" ]; then
   cp ./rackshift.sql /opt/rackshift/conf/mysql/sql
   cp ./.env /opt/rackshift
   mkdir -p /opt/rackshift/plugins
-  cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
-  sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
   sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/mysql/sql/rackshift.sql
 else
-  serverIp=`cat /opt/rackshift/rackhd/monorail/config.json | grep "apiServerAddress" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}'`
+  if [ -d /opt/rackshift/rackhd/monorail/config.json ];then
+    serverIp=`cat /opt/rackshift/rackhd/monorail/config.json | grep "apiServerAddress" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}'`
+  else
+    serverIp=`cat /opt/rackshift/conf/rackshift.properties | grep "api.server.url" | awk -F '=' '{print $2}'`
+  fi
 fi
 cp ./rackshift.properties /opt/rackshift/conf
-cp ../rackhd/monorail/rackshift.properties.bak /opt/rackshift/rackhd/monorail/rackshift.properties.bak
 sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/rackshift.properties
 
 cp ./docker-compose.yml /opt/rackshift
@@ -297,7 +298,7 @@ printTitle "正在开放必要端口"
 notRunning=$(firewall-cmd --state 2>&1)
 if [[ "${notRunning}" == "running" ]]; then
   firewall-cmd --zone=public --add-port=80/tcp --permanent 1>>$installLog 2>/dev/null
-  firewall-cmd --zone=public --add-port=8080/tcp --permanent 1>>$installLog 2>/dev/null
+  firewall-cmd --zone=public --add-port=8082/tcp --permanent 1>>$installLog 2>/dev/null
   firewall-cmd --zone=public --add-port=8083/tcp --permanent 1>>$installLog 2>/dev/null
   firewall-cmd --zone=public --add-port=8443/tcp --permanent 1>>$installLog 2>/dev/null
   firewall-cmd --zone=public --add-port=9080/tcp --permanent 1>>$installLog 2>/dev/null
@@ -314,7 +315,7 @@ fi
 
 echo
 echo "*********************************************************************************************************************************************"
-echo -e "\t $systemName 安装完成，请在服务完全启动后(大概需要等待5分钟左右)访问 http://$serverIp:80 来访问  RackShift 控制台 默认账号密码 admin/123"
+echo -e "\t $systemName 安装完成，请在服务完全启动后(大概需要等待5分钟左右)访问 http://$serverIp:8082 来访问  RackShift 控制台 默认账号密码 admin/123"
 echo
 echo "*********************************************************************************************************************************************"
 echo

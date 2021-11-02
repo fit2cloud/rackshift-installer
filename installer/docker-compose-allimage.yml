@@ -1,13 +1,8 @@
-# Copyright 2016, EMC, Inc.
+# Copyright 2021, FIT2CLOUD
 
 version: '2'
 
 services:
-
-  mongo: # 27017
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/mongo:latest
-    network_mode: host
-    privileged: true
 
   rabbitmq: # 5672, 15672
     image: registry.cn-qingdao.aliyuncs.com/x-lab/rabbitmq:management
@@ -30,80 +25,37 @@ services:
     volumes:
       - ./rackhd/files/mount:/files
 
-  # RackHD services
-
   dhcp-proxy-new: # 68/udp, 4011
-    depends_on:
-      - dhcp
-      - mongo
-      - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-dhcp-proxy:v1.5.1
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-dhcp-proxy:v1.6.0
     network_mode: host
     privileged: true
     volumes:
       - /opt/rackshift/conf:/opt/rackshift/conf
 
-  http: # 9090, 9080
-    depends_on:
-      - files
-      - mongo
-      - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-http:v1.0.0
-    network_mode: host
-    privileged: true
-    volumes:
-      - /opt/rackshift/rackhd/files/mount/common:/RackHD/on-http/static/http/common
-      - ./rackhd/monorail:/opt/monorail
-
-  syslog: # 514/udp
-    depends_on:
-      - mongo
-      - rabbitmq
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-syslog:v1.0.0
-    network_mode: host
-    privileged: true
-    volumes:
-      - ./rackhd/monorail:/opt/monorail
-
-  taskgraph:
-    depends_on:
-      - dhcp
-      - mongo
-      - rabbitmq
-      - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-taskgraph:v1.5.1
-    network_mode: host
-    privileged: true
-    volumes:
-      - ./rackhd/monorail:/opt/monorail
-
   tftp: # 69/udp
-    depends_on:
-      - files
-      - mongo
-      - rabbitmq
-      - syslog
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/on-tftp:v1.0.0
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/tftp:v1.6.0
     network_mode: host
     privileged: true
     volumes:
-      - ./rackhd/files/mount:/RackHD/on-tftp/static/tftp
-      - ./rackhd/monorail:/opt/monorail
+      - ./rackhd/files/mount:/var/tftpboot
 
-  # RackHD services
-
-  rackshift: # 8082
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.5.1
+  http: # 9090/udp
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/httpfile:v1.6.0
     privileged: true
-    pid: host
     ports:
-      - 80:8082
+      - 9090:8080
+    volumes:
+      - ./rackhd/files/mount:/data
+
+  rackshift: # 8082 9030
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.6.0
+    privileged: true
+    network_mode: host
     depends_on:
       - mysql
       - plugins
     volumes:
       - /opt/rackshift:/opt/rackshift
-      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   mysql:
@@ -126,11 +78,10 @@ services:
       - 8083:8083
     volumes:
       - /opt/rackshift:/opt/rackshift
-      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
       - /var/run/docker.sock:/var/run/docker.sock
 
   plugins:
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.5.1
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift-plugins:v1.6.0
     volumes:
       - /opt/rackshift/plugins:/plugins
 
