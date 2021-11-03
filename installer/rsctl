@@ -103,9 +103,7 @@ function main() {
   reconfig)
     echo "请重新输入 RackShift 服务器 IP（PXE 网卡） 地址："
     read serverIp
-    cp /opt/rackshift/rackhd/monorail/config.json.bak /opt/rackshift/rackhd/monorail/config.json
-    cp /opt/rackshift/rackhd/monorail/rackshift.properties.bak /opt/rackshift/conf/rackshift.properties
-    sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/rackhd/monorail/config.json
+    cp /opt/rackshift/rackhd/conf/rackshift.properties.bak /opt/rackshift/conf/rackshift.properties
     sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/rackshift.properties
     sql="update endpoint set ip='${serverIp}' where type='main_endpoint'"
     pwd=$(cat $compose_file | grep MYSQL_ROOT_PASSWORD | awk -F ' ' '{print $2}')

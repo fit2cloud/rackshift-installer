@@ -240,6 +240,7 @@ else
   fi
 fi
 cp ./rackshift.properties /opt/rackshift/conf
+cp ./rackshift.properties /opt/rackshift/rackhd/conf/rackshift.properties.bak
 sed -i "s/172.31.128.1/${serverIp}/g" /opt/rackshift/conf/rackshift.properties
 
 cp ./docker-compose.yml /opt/rackshift
