@@ -57,6 +57,7 @@ services:
     volumes:
       - /opt/rackshift:/opt/rackshift
       - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/rackshift/rackhd/files/common:/opt/rackshift/rackhd/files/common
 
   mysql:
     image: registry.cn-qingdao.aliyuncs.com/x-lab/mysql:5.7.31
