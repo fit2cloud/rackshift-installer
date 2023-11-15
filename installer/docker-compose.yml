@@ -48,7 +48,7 @@ services:
       - ./rackhd/files/mount:/data
 
   rackshift: # 8082 9030
-    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.7.1
+    image: registry.cn-qingdao.aliyuncs.com/x-lab/rackshift:v1.7.2
     privileged: true
     network_mode: host
     depends_on:
